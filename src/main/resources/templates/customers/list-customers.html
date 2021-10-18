@@ -16,8 +16,13 @@
 	<body>
 	
 		<div class="container">
+		
 			<h3>Customer Notebook</h3>
 			<hr><hr>
+			
+			<a th:href="@{/customers/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
+				Add Employee
+			</a>
 			
 			<table class="table table-bordered table-striped">
 				<thead class="thead-dark">
@@ -29,13 +34,13 @@
 						<th>Weight</th>
 						<th>Had Cancer</th>
 						<th>Had Heart Attack</th>
-						<th>Is Diabetic</th>
+						<th>Has Diabetes</th>
 						<th>Cost</th>
+						<th>Actions</th>
 					</tr>
 				</thead>
 				
 				<tbody>
-					<!-- customers'ı CUSTOMERCONTROLLER'DAN GÖNDERME İŞLEMİNİ UNUTMA -->
 					<tr th:each="tempCustomer : ${customers}">
 						
 						<td th:text="${tempCustomer.firstName}"></td>
@@ -45,8 +50,18 @@
 						<td th:text="${tempCustomer.weight}"></td>
 						<td th:text="${tempCustomer.hadCancer}"></td>
 						<td th:text="${tempCustomer.hadHeartAttack}"></td>
-						<td th:text="${tempCustomer.isDiabetic}"></td>
+						<td th:text="${tempCustomer.hasDiabetes}"></td>
 						<td th:text="${tempCustomer.cost}"></td>				
+						<td>
+							<a th:href="@{/customers/showFormForUpdate(customerId=${tempCustomer.id})}" class="btn btn-info btn-sm">
+								Update
+							</a>
+							
+							<a th:href="@{/customers/delete(customerId=${tempCustomer.id})}" class="btn btn-danger btn-sm"
+								onclick="if (!(confirm('Are you sure you want to delete this customer?'))) return false">
+								Delete
+							</a>
+						</td>
 					
 					</tr>
 				</tbody>

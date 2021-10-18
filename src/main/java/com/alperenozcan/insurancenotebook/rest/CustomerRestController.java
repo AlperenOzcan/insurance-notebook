@@ -60,7 +60,7 @@ public class CustomerRestController {
 		return theCustomer;
 	}
 	
-	@DeleteMapping("customers/{customerId}")
+	@DeleteMapping("/customers/{customerId}")
 	public String deleteCustomer(@PathVariable int customerId) {
 		
 		Customer tempCustomer = customerService.findById(customerId);
@@ -73,20 +73,6 @@ public class CustomerRestController {
 		
 		return "Customer with id " + customerId + " is deleted";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	

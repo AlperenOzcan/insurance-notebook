@@ -41,8 +41,8 @@ public class Customer {
 	@Column(name="had_heart_attack")
 	private boolean hadHeartAttack;
 	
-	@Column(name="is_diabetic")
-	private boolean isDiabetic;
+	@Column(name="has_diabetes")
+	private boolean hasDiabetes;
 	
 	@Column(name="cost")
 	private double cost;
@@ -55,7 +55,7 @@ public class Customer {
 	}
 
 	public Customer(String personalIdentificationNumber, String firstName, String lastName, boolean gender, int height,
-			int weight, boolean hadCancer, boolean hadHeartAttack, boolean isDiabetic, double cost) {
+			int weight, boolean hadCancer, boolean hadHeartAttack, boolean hasDiabetes, double cost) {
 		this.personalIdentificationNumber = personalIdentificationNumber;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -64,7 +64,7 @@ public class Customer {
 		this.weight = weight;
 		this.hadCancer = hadCancer;
 		this.hadHeartAttack = hadHeartAttack;
-		this.isDiabetic = isDiabetic;
+		this.hasDiabetes = hasDiabetes;
 		this.cost = cost;
 	}
 
@@ -142,12 +142,12 @@ public class Customer {
 		this.hadHeartAttack = hadHeartAttack;
 	}
 
-	public boolean isDiabetic() {
-		return isDiabetic;
+	public boolean isHasDiabetes() {
+		return hasDiabetes;
 	}
 
-	public void setDiabetic(boolean isDiabetic) {
-		this.isDiabetic = isDiabetic;
+	public void setHasDiabetes(boolean hasDiabetes) {
+		this.hasDiabetes = hasDiabetes;
 	}
 
 	public double getCost() {
@@ -164,7 +164,8 @@ public class Customer {
 	public String toString() {
 		return "Customer [id=" + id + ", personalIdentificationNumber=" + personalIdentificationNumber + ", firstName="
 				+ firstName + ", lastName=" + lastName + ", gender=" + gender + ", height=" + height + ", weight="
-				+ weight + ", hadCancer=" + hadCancer + ", hadHeartAttack=" + hadHeartAttack + ", isDiabetic="
-				+ isDiabetic + ", cost=" + cost + "]";
+				+ weight + ", hadCancer=" + hadCancer + ", hadHeartAttack=" + hadHeartAttack + ", hasDiabetes="
+				+ hasDiabetes + ", cost=" + cost + "]";
 	}
+
 }
