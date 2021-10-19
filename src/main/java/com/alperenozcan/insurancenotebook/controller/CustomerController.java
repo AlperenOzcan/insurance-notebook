@@ -52,6 +52,7 @@ public class CustomerController {
 	@PostMapping("/save")
 	public String saveCustomer(@ModelAttribute("customer") Customer theCustomer) {
 		
+		/*
 		byte isMale = (byte) (theCustomer.isGender() == true ? 0 : 1);
 		byte hadCancer = (byte) (theCustomer.isHadCancer() == true ? 1 : 0);
 		byte hadHeartAttack = (byte) (theCustomer.isHadHeartAttack() == true ? 1 : 0);
@@ -61,7 +62,7 @@ public class CustomerController {
 		double cost = 1000;
 		cost += isMale*200 + hadCancer*300 + hadHeartAttack*200 + hasDiabetes*100;
 		
-		theCustomer.setCost(cost);
+		theCustomer.setCost(cost); */
 		customerService.save(theCustomer);
 		
 		// to prevent duplicate submission we use redirect
@@ -77,8 +78,6 @@ public class CustomerController {
 		
 		return "/customers/customer-form";
 	}
-	
-	/* */
 	
 	@GetMapping("/delete")
 	public String deleteCustomer(@RequestParam("customerId") int theId) {

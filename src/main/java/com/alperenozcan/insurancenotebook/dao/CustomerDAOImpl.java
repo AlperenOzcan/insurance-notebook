@@ -57,9 +57,9 @@ public class CustomerDAOImpl implements CustomerDAO {
 	@Override
 	public void deleteById(int theId) {
 		
-		Query theQuery = entityManager.createQuery("delete from Customer where id=:employeeId");
+		Query theQuery = entityManager.createQuery("delete from Customer where id=:customerId");
 	
-		theQuery.setParameter("employeeId", theId);
+		theQuery.setParameter("customerId", theId);
 		
 		theQuery.executeUpdate();
 	}
