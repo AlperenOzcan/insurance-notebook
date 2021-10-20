@@ -39,7 +39,6 @@ public class CustomerHealthDetail {
 	}
 
 	public CustomerHealthDetail(int height, int weight, boolean hadCancer, boolean hadHeartAttack, boolean hasDiabetes) {
-		super();
 		this.height = height;
 		this.weight = weight;
 		this.hadCancer = hadCancer;

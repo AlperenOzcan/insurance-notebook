@@ -13,11 +13,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name="customer")
 public class Customer {
-/*
+
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_health_detail_id")
 	private CustomerHealthDetail customerHealthDetail;
-	*/
+	
 	// Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -48,8 +48,7 @@ public class Customer {
 	
 	public Customer(CustomerHealthDetail customerHealthDetail, String personalIdentificationNumber, String firstName,
 			String lastName, boolean gender, double cost) {
-		super();
-		//this.customerHealthDetail = customerHealthDetail;
+		this.customerHealthDetail = customerHealthDetail;
 		this.personalIdentificationNumber = personalIdentificationNumber;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -108,7 +107,7 @@ public class Customer {
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
-	/*
+	
 	public CustomerHealthDetail getCustomerHealthDetail() {
 		return customerHealthDetail;
 	}
@@ -124,6 +123,6 @@ public class Customer {
 				+ ", personalIdentificationNumber=" + personalIdentificationNumber + ", firstName=" + firstName
 				+ ", lastName=" + lastName + ", gender=" + gender + ", cost=" + cost + "]";
 	}
-*/
+
 
 }

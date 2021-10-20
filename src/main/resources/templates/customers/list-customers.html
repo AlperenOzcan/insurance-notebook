@@ -23,18 +23,17 @@
 			<a th:href="@{/customers/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
 				Add Employee
 			</a>
-			
+			<!-- 				
+			<a th:href="@{/customershealthdetails/list(customerHealthDetailId=${tempCustomer.customerHealthDetail.id})}" class="btn btn-outline-primary btn-sm">
+				Health Details
+			</a>
+			 -->
 			<table class="table table-bordered table-striped">
 				<thead class="thead-dark">
 					<tr>
 						<th>First Name</th>
 						<th>Last Name</th>
 						<th>Gender</th>
-						<th>Height</th>
-						<th>Weight</th>
-						<th>Had Cancer</th>
-						<th>Had Heart Attack</th>
-						<th>Has Diabetes</th>
 						<th>Cost</th>
 						<th>Actions</th>
 					</tr>
@@ -46,11 +45,6 @@
 						<td th:text="${tempCustomer.firstName}"></td>
 						<td th:text="${tempCustomer.lastName}"></td>
 						<td th:text="${tempCustomer.gender}"></td>
-						<td th:text="${tempCustomer.height}"></td>
-						<td th:text="${tempCustomer.weight}"></td>
-						<td th:text="${tempCustomer.hadCancer}"></td>
-						<td th:text="${tempCustomer.hadHeartAttack}"></td>
-						<td th:text="${tempCustomer.hasDiabetes}"></td>
 						<td th:text="${tempCustomer.cost}"></td>				
 						<td>
 							<a th:href="@{/customers/showFormForUpdate(customerId=${tempCustomer.id})}" class="btn btn-info btn-sm">

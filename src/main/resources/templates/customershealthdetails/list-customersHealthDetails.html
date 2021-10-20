@@ -16,10 +16,39 @@
 	
 		<div class="container">
 			
-			<h3>Customers Insurance List</h3>
+			<h3>Customers Health Details</h3>
 			<hr>
 		
-			
+			<table class="table table-bordered table-striped">
+				<thead class="thead-dark">
+					<tr>
+						<th>Height</th>
+						<th>Weight</th>
+						<th>Had Cancer</th>
+						<th>Had Heart Attack</th>
+						<th>Has Diabetes</th>
+						<th>Actions</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					<tr th:each="tempCustomerHealthDetails : customersHealthDetails">
+						
+						<td th:text="${customersHealthDetails.height}"></td>
+						<td th:text="${customersHealthDetails.weight}"></td>
+						<td th:text="${customersHealthDetails.hadCancer}"></td>
+						<td th:text="${customersHealthDetails.hadHeartAttack}"></td>
+						<td th:text="${customersHealthDetails.hasDiabetes}"></td>				
+						<!-- 
+						<td>
+							<a th:href="@{/customershealthdetails/showFormForUpdate(customerId=${tempCustomer.id})}" class="btn btn-info btn-sm">
+								Update
+							</a>
+						</td>
+					 -->
+					</tr>
+				</tbody>
+			</table>
 		
 		
 		

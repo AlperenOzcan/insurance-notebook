@@ -24,8 +24,10 @@ public class CustomerHealthDetailDAOImpl implements CustomerHealthDetailDAO {
 	public List<CustomerHealthDetail> findAll() {
 		
 		// query
-		Query theQuery = entityManager.createQuery("from Customer_health_detail");
-				
+		//Query theQuery = entityManager.createQuery("from Customer_health_detail");
+		Query theQuery = entityManager.createQuery("from CustomerHealthDetail");
+
+		
 		// execute query, get result
 		List<CustomerHealthDetail> customerHealthDetails = theQuery.getResultList();
 				
@@ -55,7 +57,8 @@ public class CustomerHealthDetailDAOImpl implements CustomerHealthDetailDAO {
 	@Override
 	public void deleteById(int theId) {
 
-		Query theQuery = entityManager.createQuery("delete from Customer_health_detail where id=:customerHealthDetailId");
+		// Query theQuery = entityManager.createQuery("delete from Customer_health_detail where id=:customerHealthDetailId");
+		Query theQuery = entityManager.createQuery("delete from CustomerHealthDetail where id=:customerHealthDetailId");
 		
 		theQuery.setParameter("customerHealthDetailId", theId);
 		

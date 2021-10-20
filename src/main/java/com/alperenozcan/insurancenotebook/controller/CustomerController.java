@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.alperenozcan.insurancenotebook.entity.Customer;
+import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
+import com.alperenozcan.insurancenotebook.service.CustomerHealthDetailService;
 import com.alperenozcan.insurancenotebook.service.CustomerService;
 
 @Controller
@@ -21,9 +22,13 @@ public class CustomerController {
 	
 	private CustomerService customerService;
 	
+	// need to get customer's health detail info
+	private CustomerHealthDetailService customerHealthDetailService;
+	
 	@Autowired
-	public CustomerController(CustomerService theCustomerService) {
+	public CustomerController(CustomerService theCustomerService, CustomerHealthDetailService theCustomerHealthDetailService) {
 		customerService = theCustomerService;
+		customerHealthDetailService = theCustomerHealthDetailService;
 	}
 	
 	@GetMapping("/list")
@@ -82,9 +87,26 @@ public class CustomerController {
 	@GetMapping("/delete")
 	public String deleteCustomer(@RequestParam("customerId") int theId) {
 		
+		// to delete customer's health detail; take its healthDetail
+		CustomerHealthDetail healthDetail = customerService.findById(theId).getCustomerHealthDetail();
+		
+		
+		// delete the customer
 		customerService.deleteById(theId);
 		
+		// if customer has healthDetail ...
+		if (healthDetail != null) {
+			
+			int customerHealthDetailId = healthDetail.getId();
+			
+			// delete the customer's health details
+			customerHealthDetailService.deleteById(customerHealthDetailId);
+		} 
+					
 		return "redirect:/customers/list";
+		
+		
+
 	}
 	
 	
