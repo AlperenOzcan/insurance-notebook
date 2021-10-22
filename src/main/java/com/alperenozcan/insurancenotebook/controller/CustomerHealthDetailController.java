@@ -37,6 +37,19 @@ public class CustomerHealthDetailController {
 		return "customershealthdetails/list-customersHealthDetails";
 	}
 	
+	// list only one customer's health details
+	@GetMapping("/theCustomerhealthdetails")
+	public String theCustomerHealthDetails(@RequestParam int customerHealthDetailId, Model theModel) {
+		
+		// get health details from database
+		CustomerHealthDetail theCustomersHealthDetails = customerHealthDetailService.findById(customerHealthDetailId); 
+	
+		// add the customer's health details into theModel with name "customersHealthDetails"
+		theModel.addAttribute("customersHealthDetails", theCustomersHealthDetails);
+		
+		return "customershealthdetails/list-customersHealthDetails";
+	}
+	
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(Model theModel) {
 		

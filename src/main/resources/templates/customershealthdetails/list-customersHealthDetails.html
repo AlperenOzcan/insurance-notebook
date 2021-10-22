@@ -32,29 +32,27 @@
 				</thead>
 				
 				<tbody>
-					<tr th:each="tempCustomerHealthDetails : customersHealthDetails">
+					<tr th:each="tempCustomerHealthDetails : ${customersHealthDetails}">
 						
-						<td th:text="${customersHealthDetails.height}"></td>
-						<td th:text="${customersHealthDetails.weight}"></td>
-						<td th:text="${customersHealthDetails.hadCancer}"></td>
-						<td th:text="${customersHealthDetails.hadHeartAttack}"></td>
-						<td th:text="${customersHealthDetails.hasDiabetes}"></td>				
-						<!-- 
+						<td th:text="${tempCustomerHealthDetails.height}"></td>
+						<td th:text="${tempCustomerHealthDetails.weight}"></td>
+						<td th:text="${tempCustomerHealthDetails.hadCancer}"></td>
+						<td th:text="${tempCustomerHealthDetails.hadHeartAttack}"></td>
+						<td th:text="${tempCustomerHealthDetails.hasDiabetes}"></td>				
 						<td>
-							<a th:href="@{/customershealthdetails/showFormForUpdate(customerId=${tempCustomer.id})}" class="btn btn-info btn-sm">
+							<a th:href="@{/customershealthdetails/showFormForUpdate(customerHealthDetailId=${tempCustomerHealthDetails.id})}" class="btn btn-info btn-sm">
 								Update
 							</a>
 						</td>
-					 -->
 					</tr>
 				</tbody>
 			</table>
 		
-		
+			<hr>
+			
+			<a th:href="@{/customers/list}">Go Back To Customer Notebook</a>
 		
 
-
-		
 		</div>
 
 	</body>
