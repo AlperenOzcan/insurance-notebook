@@ -43,6 +43,22 @@ public class CustomerHealthDetailDAOImpl implements CustomerHealthDetailDAO {
 				
 		return theCustomerHealthDetail;
 	}
+	
+	@Override
+	public CustomerHealthDetail findByCustomerId(int theCustomerId) {
+
+		// get the customerHealthDetail
+		// CustomerHealthDetail theCustomerHealthDetail = entityManager.find(CustomerHealthDetail.class, theId);
+		Query theQuery = entityManager.createQuery("select from CustomerHealthDetail where customerId=:tempCustomerId");
+		
+		theQuery.setParameter("tempCustomerId", theCustomerId);
+		
+		//theQuery.executeUpdate();
+		CustomerHealthDetail theCustomerHealthDetail = (CustomerHealthDetail) theQuery.getSingleResult();
+		
+		return theCustomerHealthDetail;
+	}
+	
 
 	@Override
 	public void save(CustomerHealthDetail theCustomerHealthDetail) {
@@ -63,7 +79,18 @@ public class CustomerHealthDetailDAOImpl implements CustomerHealthDetailDAO {
 		theQuery.setParameter("customerHealthDetailId", theId);
 		
 		theQuery.executeUpdate();
-
 	}
+
+	@Override
+	public void deleteByCustomerId(int theId) {
+		// Query theQuery = entityManager.createQuery("delete from Customer_health_detail where id=:customerHealthDetailId");
+		Query theQuery = entityManager.createQuery("delete from CustomerHealthDetail where customerId=:theCustomerId");
+				
+		theQuery.setParameter("theCustomerId", theId);
+				
+		theQuery.executeUpdate();
+	}
+	
+	
 
 }

@@ -1,23 +1,21 @@
 package com.alperenozcan.insurancenotebook.entity;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="customer")
 public class Customer {
 
+	/*
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_health_detail_id")
 	private CustomerHealthDetail customerHealthDetail;
-	
+	*/
 	// Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -46,18 +44,14 @@ public class Customer {
 		
 	}
 	
-	public Customer(CustomerHealthDetail customerHealthDetail, String personalIdentificationNumber, String firstName,
-			String lastName, boolean gender, double cost) {
-		this.customerHealthDetail = customerHealthDetail;
+	public Customer(String personalIdentificationNumber, String firstName, String lastName, 
+			boolean gender, double cost) {
 		this.personalIdentificationNumber = personalIdentificationNumber;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
 		this.cost = cost;
 	}
-
-
-
 
 	// Getters&Setters
 	public int getId() {
@@ -108,20 +102,13 @@ public class Customer {
 		this.cost = cost;
 	}
 	
-	public CustomerHealthDetail getCustomerHealthDetail() {
-		return customerHealthDetail;
-	}
 
-	public void setCustomerHealthDetail(CustomerHealthDetail customerHealthDetail) {
-		this.customerHealthDetail = customerHealthDetail;
-	}
-	
 	// toString
 	@Override
 	public String toString() {
-		return "Customer [customerHealthDetail=" + customerHealthDetail + ", id=" + id
-				+ ", personalIdentificationNumber=" + personalIdentificationNumber + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", gender=" + gender + ", cost=" + cost + "]";
+		return "id=" + id + ", personalIdentificationNumber=" + personalIdentificationNumber + 
+				", firstName=" + firstName + ", lastName=" + lastName + 
+				", gender=" + gender + ", cost=" + cost + "]";
 	}
 
 

@@ -32,14 +32,16 @@
 				<input type="text" th:field="*{hadHeartAttack}" class="form-control mb-4 col-4" placeholder="Had HeartAttack">
 				
 				<input type="text" th:field="*{hasDiabetes}" class="form-control mb-4 col-4" placeholder="Has Diabetes">
-					
+		
 				<button type="submit" class="btn btn-info col-2">Save</button>
 			
 			</form>
 			
 			<hr>
 			
-			<a th:href="@{/customershealthdetails/theCustomerhealthdetails(customerHealthDetailId=${customerHealthDetail.id})}">Go Back To Customers' Health Details Notebook</a>
+			<a th:href="@{/customershealthdetails/theCustomerhealthdetails(customerHealthDetailId=${customerHealthDetail.id})}">
+				Go Back To Customers' Health Details Notebook
+			</a>
 			
 		</div>
 	

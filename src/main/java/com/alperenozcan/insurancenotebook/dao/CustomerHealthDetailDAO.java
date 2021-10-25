@@ -10,7 +10,11 @@ public interface CustomerHealthDetailDAO {
 	
 	public CustomerHealthDetail findById(int theId);
 
+	public CustomerHealthDetail findByCustomerId(int theCustomerId);
+	
 	public void save(CustomerHealthDetail theCustomerHealthDetail);
 	
 	public void deleteById(int theId);
+
+	public void deleteByCustomerId(int theId);
 }

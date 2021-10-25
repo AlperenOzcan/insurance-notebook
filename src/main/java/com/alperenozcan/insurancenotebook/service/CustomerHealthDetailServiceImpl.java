@@ -31,6 +31,13 @@ public class CustomerHealthDetailServiceImpl implements CustomerHealthDetailServ
 	public CustomerHealthDetail findById(int theId) {
 		return customerHealthDetailDAO.findById(theId);
 	}
+	
+	@Override
+	@Transactional
+	public CustomerHealthDetail findByCustomerId(int theCustomerId) {
+		return customerHealthDetailDAO.findByCustomerId(theCustomerId);
+	}
+
 
 	@Override
 	@Transactional
@@ -42,6 +49,12 @@ public class CustomerHealthDetailServiceImpl implements CustomerHealthDetailServ
 	@Transactional
 	public void deleteById(int theId) {
 		customerHealthDetailDAO.deleteById(theId);
+	}
+	
+	@Override
+	@Transactional
+	public void deleteByCustomerId(int theCustomerId) {
+		customerHealthDetailDAO.deleteByCustomerId(theCustomerId);
 	}
 
 }

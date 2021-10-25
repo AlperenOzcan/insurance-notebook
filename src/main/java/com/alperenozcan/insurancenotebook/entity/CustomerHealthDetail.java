@@ -1,10 +1,13 @@
 package com.alperenozcan.insurancenotebook.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -32,21 +35,30 @@ public class CustomerHealthDetail {
 	@Column(name="has_diabetes")
 	private boolean hasDiabetes;
 	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="customer_id")
+	private CustomerHealthDetail customerId;
+	
 	// Constructors
 	// No-argument constructor needed for Hibernate
 	public CustomerHealthDetail() {
 		
 	}
 
-	public CustomerHealthDetail(int height, int weight, boolean hadCancer, boolean hadHeartAttack, boolean hasDiabetes) {
+	public CustomerHealthDetail(int height, int weight, boolean hadCancer, boolean hadHeartAttack, boolean hasDiabetes,
+			CustomerHealthDetail customerId) {
+		super();
 		this.height = height;
 		this.weight = weight;
 		this.hadCancer = hadCancer;
 		this.hadHeartAttack = hadHeartAttack;
 		this.hasDiabetes = hasDiabetes;
+		this.customerId = customerId;
 	}
 
-	
+
+
+
 	// Getters&Setters
 	public int getId() {
 		return id;
@@ -96,13 +108,20 @@ public class CustomerHealthDetail {
 		this.hasDiabetes = hasDiabetes;
 	}
 
-	
+	public CustomerHealthDetail getCustomerId() {
+		return customerId;
+	}
+
+	public void setCustomerId(CustomerHealthDetail customerId) {
+		this.customerId = customerId;
+	}
+
 	// toString
 	@Override
 	public String toString() {
-		return "Health [id=" + id + ", height=" + height + ", weight=" + weight + ", hadCancer=" + hadCancer
-				+ ", hadHeartAttack=" + hadHeartAttack + ", hasDiabetes=" + hasDiabetes + "]";
+		return "CustomerHealthDetail [id=" + id + ", height=" + height + ", weight=" + weight + ", hadCancer="
+				+ hadCancer + ", hadHeartAttack=" + hadHeartAttack + ", hasDiabetes=" + hasDiabetes + ", customerId="
+				+ customerId + "]";
 	}
-		
-	
+
 }

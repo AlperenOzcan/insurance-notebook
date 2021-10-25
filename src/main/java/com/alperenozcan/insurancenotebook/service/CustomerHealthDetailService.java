@@ -9,8 +9,12 @@ public interface CustomerHealthDetailService {
 	public List<CustomerHealthDetail> findAll();
 	
 	public CustomerHealthDetail findById(int theId);
+	
+	public CustomerHealthDetail findByCustomerId(int theCustomerId);
 
 	public void save (CustomerHealthDetail theCustomerHealthDetail);
 	
 	public void deleteById(int theId); 
+	
+	public void deleteByCustomerId(int theCustomerId);
 }
