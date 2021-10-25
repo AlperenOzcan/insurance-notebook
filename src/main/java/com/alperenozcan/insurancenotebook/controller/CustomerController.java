@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.alperenozcan.insurancenotebook.entity.Customer;
+import com.alperenozcan.insurancenotebook.service.CustomerHealthDetailService;
 import com.alperenozcan.insurancenotebook.service.CustomerService;
 
 @Controller
@@ -21,9 +21,13 @@ public class CustomerController {
 	
 	private CustomerService customerService;
 	
+	// need to get customer's health detail info
+	private CustomerHealthDetailService customerHealthDetailService;
+	
 	@Autowired
-	public CustomerController(CustomerService theCustomerService) {
+	public CustomerController(CustomerService theCustomerService, CustomerHealthDetailService theCustomerHealthDetailService) {
 		customerService = theCustomerService;
+		customerHealthDetailService = theCustomerHealthDetailService;
 	}
 	
 	@GetMapping("/list")
@@ -52,16 +56,6 @@ public class CustomerController {
 	@PostMapping("/save")
 	public String saveCustomer(@ModelAttribute("customer") Customer theCustomer) {
 		
-		byte isMale = (byte) (theCustomer.isGender() == true ? 0 : 1);
-		byte hadCancer = (byte) (theCustomer.isHadCancer() == true ? 1 : 0);
-		byte hadHeartAttack = (byte) (theCustomer.isHadHeartAttack() == true ? 1 : 0);
-		byte hasDiabetes = (byte) (theCustomer.isHasDiabetes() == true ? 1 : 0);
-		
-		// initial cost
-		double cost = 1000;
-		cost += isMale*200 + hadCancer*300 + hadHeartAttack*200 + hasDiabetes*100;
-		
-		theCustomer.setCost(cost);
 		customerService.save(theCustomer);
 		
 		// to prevent duplicate submission we use redirect
@@ -78,20 +72,21 @@ public class CustomerController {
 		return "/customers/customer-form";
 	}
 	
-	/* */
-	
 	@GetMapping("/delete")
 	public String deleteCustomer(@RequestParam("customerId") int theId) {
 		
-		customerService.deleteById(theId);
+		Customer theCustomer = customerService.findById(theId);
 		
-		return "redirect:/customers/list";
+		int theCustomerId = theCustomer.getId();
+		
+		// delete the customer's health detail
+		customerHealthDetailService.deleteByCustomerId(theCustomerId);
+		
+		// delete the customer
+		customerService.deleteById(theId);
+					
+		return "redirect:/customers/list";	
 	}
-	
-	
-	
-	
-	
 	
 	
 	

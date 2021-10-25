@@ -11,6 +11,11 @@ import javax.persistence.Table;
 @Table(name="customer")
 public class Customer {
 
+	/*
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="customer_health_detail_id")
+	private CustomerHealthDetail customerHealthDetail;
+	*/
 	// Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -29,21 +34,6 @@ public class Customer {
 	@Column(name="gender")
 	private boolean gender;
 	
-	@Column(name="height")
-	private int height;
-	
-	@Column(name="weight")
-	private int weight;
-	
-	@Column(name="had_cancer")
-	private boolean hadCancer;
-	
-	@Column(name="had_heart_attack")
-	private boolean hadHeartAttack;
-	
-	@Column(name="has_diabetes")
-	private boolean hasDiabetes;
-	
 	@Column(name="cost")
 	private double cost;
 	
@@ -53,22 +43,16 @@ public class Customer {
 	public Customer() {
 		
 	}
-
-	public Customer(String personalIdentificationNumber, String firstName, String lastName, boolean gender, int height,
-			int weight, boolean hadCancer, boolean hadHeartAttack, boolean hasDiabetes, double cost) {
+	
+	public Customer(String personalIdentificationNumber, String firstName, String lastName, 
+			boolean gender, double cost) {
 		this.personalIdentificationNumber = personalIdentificationNumber;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
-		this.height = height;
-		this.weight = weight;
-		this.hadCancer = hadCancer;
-		this.hadHeartAttack = hadHeartAttack;
-		this.hasDiabetes = hasDiabetes;
 		this.cost = cost;
 	}
 
-	
 	// Getters&Setters
 	public int getId() {
 		return id;
@@ -110,46 +94,6 @@ public class Customer {
 		this.gender = gender;
 	}
 
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
-		this.height = height;
-	}
-
-	public int getWeight() {
-		return weight;
-	}
-
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-
-	public boolean isHadCancer() {
-		return hadCancer;
-	}
-
-	public void setHadCancer(boolean hadCancer) {
-		this.hadCancer = hadCancer;
-	}
-
-	public boolean isHadHeartAttack() {
-		return hadHeartAttack;
-	}
-
-	public void setHadHeartAttack(boolean hadHeartAttack) {
-		this.hadHeartAttack = hadHeartAttack;
-	}
-
-	public boolean isHasDiabetes() {
-		return hasDiabetes;
-	}
-
-	public void setHasDiabetes(boolean hasDiabetes) {
-		this.hasDiabetes = hasDiabetes;
-	}
-
 	public double getCost() {
 		return cost;
 	}
@@ -157,15 +101,15 @@ public class Customer {
 	public void setCost(double cost) {
 		this.cost = cost;
 	}
-
+	
 
 	// toString
 	@Override
 	public String toString() {
-		return "Customer [id=" + id + ", personalIdentificationNumber=" + personalIdentificationNumber + ", firstName="
-				+ firstName + ", lastName=" + lastName + ", gender=" + gender + ", height=" + height + ", weight="
-				+ weight + ", hadCancer=" + hadCancer + ", hadHeartAttack=" + hadHeartAttack + ", hasDiabetes="
-				+ hasDiabetes + ", cost=" + cost + "]";
+		return "id=" + id + ", personalIdentificationNumber=" + personalIdentificationNumber + 
+				", firstName=" + firstName + ", lastName=" + lastName + 
+				", gender=" + gender + ", cost=" + cost + "]";
 	}
+
 
 }

@@ -17,14 +17,14 @@
 	
 		<div class="container">
 			
-			<h3>Customer Notebook</h3>
+			<h3>Customer Form</h3>
 			<hr>
 			
 			<p class="h4 mb-4">Save Customer</p>
 			
 			<form action="#" th:action="@{/customers/save}" th:object="${customer}" method="POST">
 			
-				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{id}" />			
 			
 				<input type="text" th:field="*{personalIdentificationNumber}" class="form-control mb-4 col-4" placeholder="Personal Identification Number">
 			
@@ -33,17 +33,7 @@
 				<input type="text" th:field="*{lastName}" class="form-control mb-4 col-4" placeholder="Last Name">
 				
 				<input type="text" th:field="*{gender}" class="form-control mb-4 col-4" placeholder="Gender">
-			
-				<input type="text" th:field="*{height}" class="form-control mb-4 col-4" placeholder="Height">
-				
-				<input type="text" th:field="*{weight}" class="form-control mb-4 col-4" placeholder="Weight">
-				
-				<input type="text" th:field="*{hadCancer}" class="form-control mb-4 col-4" placeholder="Had Cancer?">
-								
-				<input type="text" th:field="*{hadHeartAttack}" class="form-control mb-4 col-4" placeholder="Had Heart Attack?">
-				
-				<input type="text" th:field="*{hasDiabetes}" class="form-control mb-4 col-4" placeholder="Has Diabetes?">
-				
+					
 				<button type="submit" class="btn btn-info col-2">Save</button>
 			
 			</form>
