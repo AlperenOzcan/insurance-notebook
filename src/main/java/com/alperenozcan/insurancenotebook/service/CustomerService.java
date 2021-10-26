@@ -5,7 +5,7 @@ import java.util.List;
 import com.alperenozcan.insurancenotebook.entity.Customer;
 
 public interface CustomerService {
-
+	
 	public List<Customer> findAll();
 	
 	public Customer findById(int theId);

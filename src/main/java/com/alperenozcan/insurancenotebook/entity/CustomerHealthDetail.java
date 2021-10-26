@@ -37,7 +37,8 @@ public class CustomerHealthDetail {
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="customer_id")
-	private CustomerHealthDetail customerId;
+	private Customer customer;
+	
 	
 	// Constructors
 	// No-argument constructor needed for Hibernate
@@ -46,17 +47,14 @@ public class CustomerHealthDetail {
 	}
 
 	public CustomerHealthDetail(int height, int weight, boolean hadCancer, boolean hadHeartAttack, boolean hasDiabetes,
-			CustomerHealthDetail customerId) {
-		super();
+			Customer customer) {
 		this.height = height;
 		this.weight = weight;
 		this.hadCancer = hadCancer;
 		this.hadHeartAttack = hadHeartAttack;
 		this.hasDiabetes = hasDiabetes;
-		this.customerId = customerId;
+		this.customer = customer;
 	}
-
-
 
 
 	// Getters&Setters
@@ -108,20 +106,20 @@ public class CustomerHealthDetail {
 		this.hasDiabetes = hasDiabetes;
 	}
 
-	public CustomerHealthDetail getCustomerId() {
-		return customerId;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCustomerId(CustomerHealthDetail customerId) {
-		this.customerId = customerId;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	// toString
 	@Override
 	public String toString() {
 		return "CustomerHealthDetail [id=" + id + ", height=" + height + ", weight=" + weight + ", hadCancer="
-				+ hadCancer + ", hadHeartAttack=" + hadHeartAttack + ", hasDiabetes=" + hasDiabetes + ", customerId="
-				+ customerId + "]";
+				+ hadCancer + ", hadHeartAttack=" + hadHeartAttack + ", hasDiabetes=" + hasDiabetes + ", customer="
+				+ customer + "]";
 	}
 
 }

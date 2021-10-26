@@ -41,7 +41,6 @@ public class CustomerRestController {
 		}
 		
 		return theCustomer;
-		
 	}
 	
 	@PostMapping("/customers")
@@ -51,7 +50,6 @@ public class CustomerRestController {
 		customerService.save(theCustomer);
 		
 		return theCustomer;
-		
 	}
 	
 	@PutMapping("/customers")
@@ -73,11 +71,4 @@ public class CustomerRestController {
 		
 		return "Customer with id " + customerId + " is deleted";
 	}
-	
-	
-	
-	
-	
-	
-	
 }

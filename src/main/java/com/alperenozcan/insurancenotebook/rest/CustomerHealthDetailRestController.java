@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alperenozcan.insurancenotebook.entity.Customer;
 import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.service.CustomerHealthDetailService;
 
@@ -22,25 +23,25 @@ public class CustomerHealthDetailRestController {
 	private CustomerHealthDetailService customerHealthDetailService;
 
 	@Autowired
-	public CustomerHealthDetailRestController (CustomerHealthDetailService theCustomerHealthDetailService) {
-		customerHealthDetailService = theCustomerHealthDetailService;
+	public CustomerHealthDetailRestController(CustomerHealthDetailService customerHealthDetailService) {
+		this.customerHealthDetailService = customerHealthDetailService;
 	}
-
+	
 	@GetMapping("/customers-health-details")
 	public List<CustomerHealthDetail> findAll() {
 		return customerHealthDetailService.findAll();
 	}
 
 	@GetMapping("/customers-health-details/{customerHealthDetailId}")
-	public CustomerHealthDetail getCustomerHealthDetail(@PathVariable int customerHealthDetailId) {
+	public CustomerHealthDetail getCustomer(@PathVariable int customerHealthDetailId) {
 		
 		CustomerHealthDetail theCustomerHealthDetail = customerHealthDetailService.findById(customerHealthDetailId);
 		
 		if (theCustomerHealthDetail == null) {
-			throw new RuntimeException("There is no customer with id " + customerHealthDetailId);
+			throw new RuntimeException("There is no customer health detail information with heatlh id " + customerHealthDetailId);
 		}
 		
-		return theCustomerHealthDetail;	
+		return theCustomerHealthDetail;
 	}
 	
 	@PostMapping("/customers-health-details")
@@ -64,12 +65,11 @@ public class CustomerHealthDetailRestController {
 		CustomerHealthDetail tempCustomerHealthDetail = customerHealthDetailService.findById(customerHealthDetailId);
 		
 		if (tempCustomerHealthDetail == null) {
-			throw new RuntimeException("There is no customer with id " + customerHealthDetailId);
+			throw new RuntimeException("There is no customer health detail with health id " + customerHealthDetailId);
 		}
 		
 		customerHealthDetailService.deleteById(customerHealthDetailId);
 		
-		return "Customer Health Detail with id " + customerHealthDetailId + " is deleted";
+		return "Customer health detail with id " + customerHealthDetailId + " is deleted";
 	}
-	
 }

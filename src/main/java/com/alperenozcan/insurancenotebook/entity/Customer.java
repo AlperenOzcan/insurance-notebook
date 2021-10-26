@@ -11,11 +11,6 @@ import javax.persistence.Table;
 @Table(name="customer")
 public class Customer {
 
-	/*
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="customer_health_detail_id")
-	private CustomerHealthDetail customerHealthDetail;
-	*/
 	// Attributes
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -34,9 +29,6 @@ public class Customer {
 	@Column(name="gender")
 	private boolean gender;
 	
-	@Column(name="cost")
-	private double cost;
-	
 	
 	// Constructors
 	// No-argument constructor needed for Hibernate
@@ -44,13 +36,11 @@ public class Customer {
 		
 	}
 	
-	public Customer(String personalIdentificationNumber, String firstName, String lastName, 
-			boolean gender, double cost) {
+	public Customer(String personalIdentificationNumber, String firstName, String lastName, boolean gender) {
 		this.personalIdentificationNumber = personalIdentificationNumber;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
-		this.cost = cost;
 	}
 
 	// Getters&Setters
@@ -94,21 +84,13 @@ public class Customer {
 		this.gender = gender;
 	}
 
-	public double getCost() {
-		return cost;
-	}
-
-	public void setCost(double cost) {
-		this.cost = cost;
-	}
-	
 
 	// toString
 	@Override
 	public String toString() {
 		return "id=" + id + ", personalIdentificationNumber=" + personalIdentificationNumber + 
 				", firstName=" + firstName + ", lastName=" + lastName + 
-				", gender=" + gender + ", cost=" + cost + "]";
+				", gender=" + gender + "]";
 	}
 
 
