@@ -29,9 +29,9 @@ public class InsuranceQuote {
 	@Column(name="premium")
 	private double premium;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="customer_id")
-	private CustomerHealthDetail customerId;
+	private Customer customerId;
 	
 	
 	// Constructors
@@ -40,7 +40,7 @@ public class InsuranceQuote {
 		
 	}
 
-	public InsuranceQuote(String insuranceType, boolean acceptance, double premium, CustomerHealthDetail customerId) {
+	public InsuranceQuote(String insuranceType, boolean acceptance, double premium, Customer customerId) {
 		this.insuranceType = insuranceType;
 		this.acceptance = acceptance;
 		this.premium = premium;
@@ -81,11 +81,11 @@ public class InsuranceQuote {
 		this.premium = premium;
 	}
 
-	public CustomerHealthDetail getCustomerId() {
+	public Customer getCustomerId() {
 		return customerId;
 	}
 
-	public void setCustomerId(CustomerHealthDetail customerId) {
+	public void setCustomerId(Customer customerId) {
 		this.customerId = customerId;
 	}
 

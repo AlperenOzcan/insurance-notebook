@@ -32,7 +32,7 @@ public class CustomerHealthDetailRestController {
 	}
 
 	@GetMapping("/customers-health-details/{customerHealthDetailId}")
-	public CustomerHealthDetail getCustomer(@PathVariable int customerHealthDetailId) {
+	public CustomerHealthDetail getCustomerHealthDetail(@PathVariable int customerHealthDetailId) {
 		
 		CustomerHealthDetail theCustomerHealthDetail = customerHealthDetailService.findById(customerHealthDetailId);
 		

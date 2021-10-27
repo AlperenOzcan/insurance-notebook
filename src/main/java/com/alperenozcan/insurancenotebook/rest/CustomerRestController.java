@@ -13,22 +13,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alperenozcan.insurancenotebook.entity.Customer;
-import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.service.CustomerHealthDetailService;
 import com.alperenozcan.insurancenotebook.service.CustomerService;
+import com.alperenozcan.insurancenotebook.service.InsuranceQuoteService;
 
 @RestController
 @RequestMapping("/api")
 public class CustomerRestController {
 
 	private CustomerService customerService;
-	
 	private CustomerHealthDetailService customerHealthDetailService;
+	private InsuranceQuoteService insuranceQuoteService;
 	
 	@Autowired
-	public CustomerRestController (CustomerService theCustomerService, CustomerHealthDetailService theCustomerHealthDetailService) {
+	public CustomerRestController (CustomerService theCustomerService, CustomerHealthDetailService theCustomerHealthDetailService,
+			InsuranceQuoteService theInsuranceQuoteService) {
 		customerService = theCustomerService;
 		customerHealthDetailService = theCustomerHealthDetailService;
+		insuranceQuoteService = theInsuranceQuoteService;
 	}
 	
 	@GetMapping("/customers")
@@ -68,8 +70,10 @@ public class CustomerRestController {
 		
 		// delete customer health details of the customer
 		int customerHealthDetailId = customerHealthDetailService.findByCustomerId(customerId).getId();
-
 		customerHealthDetailService.deleteById(customerHealthDetailId);
+		
+		// delete insurance quotes of the customer if any
+		// TO DO
 		
 		
 		Customer tempCustomer = customerService.findById(customerId);
