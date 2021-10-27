@@ -35,7 +35,7 @@ public class CustomerHealthDetail {
 	@Column(name="has_diabetes")
 	private boolean hasDiabetes;
 	
-	@OneToOne(cascade=CascadeType.ALL)
+	@OneToOne(cascade= CascadeType.MERGE)
 	@JoinColumn(name="customer_id")
 	private Customer customer;
 	

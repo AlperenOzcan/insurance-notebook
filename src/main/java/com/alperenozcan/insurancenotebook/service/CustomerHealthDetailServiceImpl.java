@@ -56,7 +56,7 @@ public class CustomerHealthDetailServiceImpl implements CustomerHealthDetailServ
 		if (theCustomer.isPresent()) {
 			CustomerHealthDetail result = customerHealthDetailRepository.findByCustomerId(theCustomerId);
 			
-			theCustomerHealthDetail = null;
+			theCustomerHealthDetail = result;
 		}
 		else {
 			// we do not have any customerHealthDetail with given id

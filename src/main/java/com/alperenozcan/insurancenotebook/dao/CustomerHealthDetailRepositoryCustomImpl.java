@@ -22,7 +22,7 @@ public class CustomerHealthDetailRepositoryCustomImpl implements CustomerHealthD
 	@Override
 	public CustomerHealthDetail findByCustomerId(int theCustomerId) {
 		
-		Query theQuery = entityManager.createQuery("from CustomerHealthDetail where customerId=:tempCustomerId");
+		Query theQuery = entityManager.createQuery("from CustomerHealthDetail where customer_id=:tempCustomerId");
 		
 		theQuery.setParameter("tempCustomerId", theCustomerId);
 		
