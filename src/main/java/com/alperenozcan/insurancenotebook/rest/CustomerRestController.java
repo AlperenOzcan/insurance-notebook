@@ -73,9 +73,9 @@ public class CustomerRestController {
 		customerHealthDetailService.deleteById(customerHealthDetailId);
 		
 		// delete insurance quotes of the customer if any
-		// TO DO
-		
-		
+		int insuranceQuotesId = insuranceQuoteService.findByCustomerId(customerId).getId();
+		insuranceQuoteService.deleteById(insuranceQuotesId);
+				
 		Customer tempCustomer = customerService.findById(customerId);
 		
 		if (tempCustomer == null) {
