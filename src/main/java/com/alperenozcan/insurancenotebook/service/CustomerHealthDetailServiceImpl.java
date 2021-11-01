@@ -76,4 +76,9 @@ public class CustomerHealthDetailServiceImpl implements CustomerHealthDetailServ
 		customerHealthDetailRepository.deleteById(theId);
 	}
 
+	@Override
+	public void deleteByCustomerId(int theCustomerId) {
+		customerHealthDetailRepository.deleteByCustomerId(theCustomerId);		
+	}
+
 }

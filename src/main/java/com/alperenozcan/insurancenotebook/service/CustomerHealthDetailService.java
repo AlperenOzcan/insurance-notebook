@@ -15,4 +15,6 @@ public interface CustomerHealthDetailService {
 	public void save (CustomerHealthDetail theCustomerHealthDetail);
 	
 	public void deleteById(int theId);
+	
+	public void deleteByCustomerId(int theCustomerId);
 }

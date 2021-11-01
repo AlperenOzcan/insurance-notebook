@@ -33,4 +33,15 @@ public class CustomerHealthDetailRepositoryCustomImpl implements CustomerHealthD
 		return customerHealthDetails.get(0);
 	}
 
+	@Override
+	public void deleteByCustomerId(int theCustomerId) {
+		
+		Query theQuery = entityManager.createQuery("delete from CustomerHealthDetail where customerId=:customerHealthDetailId");
+		
+		
+		theQuery.setParameter("theCustomerId", theCustomerId);
+				
+		theQuery.executeUpdate();
+	}
+
 }
