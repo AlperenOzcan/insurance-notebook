@@ -6,5 +6,4 @@ public interface CustomerHealthDetailRepositoryCustom {
 
 	public CustomerHealthDetail findByCustomerId(int theCustomerId);
 	
-	public void deleteByCustomerId(int theCustomerId);
 }
