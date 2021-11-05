@@ -1,6 +1,7 @@
 package com.alperenozcan.insurancenotebook.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,18 +12,22 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.alperenozcan.insurancenotebook.entity.Customer;
 import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.service.CustomerHealthDetailService;
+import com.alperenozcan.insurancenotebook.service.CustomerService;
 
 @Controller
 @RequestMapping("/customer-health-details")
 public class CustomerHealthDetailController {
 
-private CustomerHealthDetailService customerHealthDetailService;
+	private CustomerHealthDetailService customerHealthDetailService;
+	private CustomerService customerService;
 	
 	@Autowired
-	public CustomerHealthDetailController(CustomerHealthDetailService theCustomerHealthDetailService) {
+	public CustomerHealthDetailController(CustomerHealthDetailService theCustomerHealthDetailService, CustomerService theCustomerService) {
 		customerHealthDetailService = theCustomerHealthDetailService;
+		customerService = theCustomerService;
 	}
 	
 	@GetMapping("/list")
@@ -36,41 +41,37 @@ private CustomerHealthDetailService customerHealthDetailService;
 		
 		return "health-details/list-customersHealthDetails";
 	}
+
 	
-	/*
-	@GetMapping("/showFormForAdd")
-	public String showFormForAdd(Model theModel) {
-		
-		CustomerHealthDetail theCustomerHealthDetail = new CustomerHealthDetail();
-		
-		theModel.addAttribute("customersHealthDetail", theCustomerHealthDetail);
-		
-		return "health-details/customersHealthDetails-form";
-	}
-	*/
-	
-	/*
 	@PostMapping("/save")
 	public String saveCustomerHealthDetail(@ModelAttribute("customerHealthDetail") CustomerHealthDetail theCustomerHealthDetail) {
 		
 		customerHealthDetailService.save(theCustomerHealthDetail);
 		
 		// to prevent duplicate submission we use redirect
-		return "redirect:/customer-health-details/list";
+		return "redirect:/customers/list";
 	}
-	*/
 	
-	/*
+	
+	
 	@GetMapping("/showFormForUpdate")
-	public String showFormForUpdate(@RequestParam("customerHealthDetailId") int theId, Model theModel) {
+	public String showFormForUpdate(@RequestParam("customerId") int theId, Model theModel) {
 		
-		CustomerHealthDetail theCustomerHealthDetail = customerHealthDetailService.findById(theId);
+		Optional<CustomerHealthDetail> theCustomerHealthDetail = customerHealthDetailService.findByCustomerId(theId);
 		
-		theModel.addAttribute("customerHealthDetail", theCustomerHealthDetail);
-		
-		return "/customer-health-details/customersHealthDetails-form";
+		if (theCustomerHealthDetail.isPresent()) {
+			
+			theModel.addAttribute("customerHealthDetail", theCustomerHealthDetail.get());
+		}
+		else {
+			
+			Customer tempCustomer = customerService.findById(theId);
+			theModel.addAttribute("customerHealthDetail", new CustomerHealthDetail(0, 0, false, false, false, tempCustomer));
+		}
+
+		return "health-details/customersHealthDetails-form";		
 	}
-	*/
+	
 	
 	@GetMapping("/delete")
 	public String deleteCustomerHealthDetail(@RequestParam("customerHealthDetailId") int theId) {

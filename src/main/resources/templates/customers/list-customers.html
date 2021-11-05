@@ -18,6 +18,10 @@
 			<h3>Customer List</h3>
 			<hr><hr>
 			
+			<a th:href="@{/customers/showFormForAdd}" class="btn btn-primary btn-sm mb-3">
+				Add Customer
+			</a>
+			
 			<table class="table table-bordered table-striped">
 				<thead class="thead-dark"> 
 					<tr>
@@ -36,6 +40,12 @@
 						<td th:text="${tempCustomer.lastName}"></td>
 						<td th:text="${tempCustomer.gender}"></td>
 						<td>
+							<a th:href="@{/customer-health-details/showFormForUpdate(customerId=${tempCustomer.id})}" class="btn btn-outline-success btn-sm">
+								Health Detail
+							</a>
+							<a th:href="@{/}" class="btn btn-outline-info btn-sm">
+								Insurance Quote(s)
+							</a>
 							<a th:href="@{/customers/delete(customerId=${tempCustomer.id})}" class="btn btn-danger btn-sm"
 								onclick="if (!(confirm('Are you sure you want to delete this customer?'))) return false">
 								Delete

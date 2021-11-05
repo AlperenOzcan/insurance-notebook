@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -45,7 +47,7 @@ public class CustomerController {
 		return "customers/list-customers";
 	}
 	
-	/*
+	
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(Model theModel) {
 		
@@ -55,10 +57,8 @@ public class CustomerController {
 		
 		return "customers/customer-form";
 	}
-	*/
 	
-	/*
-	// Will need to be updated
+	
 	@PostMapping("/save")
 	public String saveCustomer(@ModelAttribute("customer") Customer theCustomer) {
 		
@@ -67,7 +67,7 @@ public class CustomerController {
 		// to prevent duplicate submission we use redirect
 		return "redirect:/customers/list";
 	}
-	*/
+	
 	
 	/*
 	@GetMapping("/showFormForUpdate")
