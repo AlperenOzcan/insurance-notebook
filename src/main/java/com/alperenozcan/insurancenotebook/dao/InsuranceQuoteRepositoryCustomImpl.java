@@ -1,11 +1,11 @@
 package com.alperenozcan.insurancenotebook.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
 
 public class InsuranceQuoteRepositoryCustomImpl implements InsuranceQuoteRepositoryCustom {
@@ -23,7 +23,7 @@ public class InsuranceQuoteRepositoryCustomImpl implements InsuranceQuoteReposit
 
 
 	@Override
-	public InsuranceQuote findByCustomerId(int theCustomerId) {
+	public Optional<List<InsuranceQuote>> findByCustomerId(int theCustomerId) {
 		Query theQuery = entityManager.createQuery("from InsuranceQuote where customer_id=:tempCustomerId");
 		
 		theQuery.setParameter("tempCustomerId", theCustomerId);
@@ -32,7 +32,7 @@ public class InsuranceQuoteRepositoryCustomImpl implements InsuranceQuoteReposit
 		List<InsuranceQuote> customerHealthDetails = theQuery.getResultList();
 		
 		// return result
-		return customerHealthDetails.get(0);
+		return Optional.of(customerHealthDetails);
 	}
 
 }

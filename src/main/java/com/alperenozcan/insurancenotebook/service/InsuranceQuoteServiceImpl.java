@@ -46,20 +46,20 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 	}
 
 	@Override
-	public InsuranceQuote findByCustomerId(int theCustomerId) {
+	public Optional<List<InsuranceQuote>> findByCustomerId(int theCustomerId) {
 		Optional<Customer> theCustomer = customerRepository.findById(theCustomerId);
 		
-		InsuranceQuote theInsuranceQuote = null;
+		Optional<List<InsuranceQuote>> result = Optional.empty();
 		if (theCustomer.isPresent()) {
-			InsuranceQuote result = insuranceQuoteRepository.findByCustomerId(theCustomerId);
-			
-			theInsuranceQuote = result;
+			Optional<List<InsuranceQuote>> insuranceQuotes = insuranceQuoteRepository.findByCustomerId(theCustomerId);
+			result = insuranceQuotes;
 		}
 		else {
-			throw new RuntimeException("Did not find InsuranceQuote with customerId: " + theCustomerId);
+			// throw new RuntimeException("Did not find InsuranceQuote with customerId: " + theCustomerId);
+			System.out.println("Did not find insuranceQuote with customerId: " + theCustomerId);
 		}
 		
-		return theInsuranceQuote;
+		return result;
 	}
 
 	@Override

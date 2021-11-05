@@ -1,6 +1,7 @@
 package com.alperenozcan.insurancenotebook.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -20,7 +21,7 @@ public class CustomerHealthDetailRepositoryCustomImpl implements CustomerHealthD
 	}
 	
 	@Override
-	public CustomerHealthDetail findByCustomerId(int theCustomerId) {
+	public Optional<CustomerHealthDetail> findByCustomerId(int theCustomerId) {
 		
 		Query theQuery = entityManager.createQuery("from CustomerHealthDetail where customer_id=:tempCustomerId");
 		
@@ -28,9 +29,14 @@ public class CustomerHealthDetailRepositoryCustomImpl implements CustomerHealthD
 		
 		// execute query, get result
 		List<CustomerHealthDetail> customerHealthDetails = theQuery.getResultList();
-		
-		// return result
-		return customerHealthDetails.get(0);
+
+		// check is there any result & return it
+		if (customerHealthDetails.isEmpty()) {
+			return Optional.empty();
+		}
+		else {
+			return Optional.of(customerHealthDetails.get(0));
+		}
 	}
 
 }

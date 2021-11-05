@@ -1,6 +1,7 @@
 package com.alperenozcan.insurancenotebook.rest;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.alperenozcan.insurancenotebook.entity.Customer;
+import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
+import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
 import com.alperenozcan.insurancenotebook.service.CustomerHealthDetailService;
 import com.alperenozcan.insurancenotebook.service.CustomerService;
 import com.alperenozcan.insurancenotebook.service.InsuranceQuoteService;
@@ -69,12 +72,21 @@ public class CustomerRestController {
 	public String deleteCustomer(@PathVariable int customerId) {
 		
 		// delete customer health details of the customer
-		int customerHealthDetailId = customerHealthDetailService.findByCustomerId(customerId).getId();
-		customerHealthDetailService.deleteById(customerHealthDetailId);
+		Optional<CustomerHealthDetail> customerHealthDetail = customerHealthDetailService.findByCustomerId(customerId);
+		// do we have customer health detail with given customerID. If do not ...
+		if (customerHealthDetail.get() != null) {
+			int customerHealthDetailId = customerHealthDetail.get().getId();
+			customerHealthDetailService.deleteById(customerHealthDetailId);	
+		}
 		
-		// delete insurance quotes of the customer if any
-		int insuranceQuotesId = insuranceQuoteService.findByCustomerId(customerId).getId();
-		insuranceQuoteService.deleteById(insuranceQuotesId);
+		// Delete customer's insurance quote(s) if any 
+		Optional<List<InsuranceQuote>> insuranceQuotes = insuranceQuoteService.findByCustomerId(customerId);
+		if (insuranceQuotes.isPresent()) {
+			List<InsuranceQuote> list = insuranceQuotes.get();
+			for (InsuranceQuote quote : list){
+				insuranceQuoteService.deleteById(quote.getId());
+			}
+		}
 				
 		Customer tempCustomer = customerService.findById(customerId);
 		

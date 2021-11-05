@@ -49,18 +49,19 @@ public class CustomerHealthDetailServiceImpl implements CustomerHealthDetailServ
 	}
 
 	@Override
-	public CustomerHealthDetail findByCustomerId(int theCustomerId) {
+	public Optional<CustomerHealthDetail> findByCustomerId(int theCustomerId) {
 		Optional<Customer> theCustomer = customerRepository.findById(theCustomerId);
 		
-		CustomerHealthDetail theCustomerHealthDetail = null;
+		Optional<CustomerHealthDetail> theCustomerHealthDetail = Optional.empty();
 		if (theCustomer.isPresent()) {
-			CustomerHealthDetail result = customerHealthDetailRepository.findByCustomerId(theCustomerId);
+			Optional<CustomerHealthDetail> result = customerHealthDetailRepository.findByCustomerId(theCustomerId);
 			
 			theCustomerHealthDetail = result;
 		}
 		else {
 			// we do not have any customerHealthDetail with given id
-			throw new RuntimeException("Did not find customerHealthDetail with customerId: " + theCustomerId);
+			// throw new RuntimeException("Did not find customerHealthDetail with customerId: " + theCustomerId);
+			System.out.println("Did not find customerHealthDetail with customerId: " + theCustomerId);
 		}
 		
 		return theCustomerHealthDetail;
