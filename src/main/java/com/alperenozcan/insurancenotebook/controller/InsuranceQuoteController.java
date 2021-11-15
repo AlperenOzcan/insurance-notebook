@@ -24,13 +24,15 @@ public class InsuranceQuoteController {
 	private InsuranceQuoteService insuranceQuoteService;
 	private CustomerService customerService;
 	private CustomerHealthDetailService customerHealthDetailService;
+	private CustomerHealthDetailController customerHealthDetailController;
 	
 
 	public InsuranceQuoteController (InsuranceQuoteService insuranceQuoteService, CustomerService customerService,
-			CustomerHealthDetailService customerHealthDetailService) {
+			CustomerHealthDetailService customerHealthDetailService, CustomerHealthDetailController customerHealthDetailController) {
 		this.insuranceQuoteService = insuranceQuoteService;
 		this.customerService = customerService;
 		this.customerHealthDetailService = customerHealthDetailService;
+		this.customerHealthDetailController = customerHealthDetailController;
 	}
 
 	
@@ -60,13 +62,14 @@ public class InsuranceQuoteController {
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(@RequestParam("customerId") int theId, Model theModel) {
 		
-		/*		NEED SOME WORK
 		// check given customer has health detail or not
 		Optional<CustomerHealthDetail> customerHealtDetail = customerHealthDetailService.findByCustomerId(theId);
-		if (customerHealtDetail.get() == null) {
-			return "/customer-health-details/showFormForUpdate(customerId=${" + theId + "})";
+		
+		if (customerHealtDetail.isEmpty()) {
+			
+			return customerHealthDetailController.showFormForUpdate(theId, theModel);
 		}
-		*/
+		
 		
 		InsuranceQuote theQuote = new InsuranceQuote();
 		
@@ -84,6 +87,16 @@ public class InsuranceQuoteController {
 		
 		// to prevent duplicate submission we use redirect
 		return "redirect:/insurance-quotes/list-customer-quotes?customerId=" + theQuote.getCustomerId().getId();
+	}
+	
+	@GetMapping("/showFormForUpdate")
+	public String showFormForUpdate(@RequestParam("quoteId") int theId, Model theModel) {
+		
+		InsuranceQuote insuranceQuote = insuranceQuoteService.findById(theId);
+	
+		theModel.addAttribute("quote", insuranceQuote);
+	
+		return "insurance-quotes/insurance-quote-form-update";
 	}
 	
 	@GetMapping("/delete")

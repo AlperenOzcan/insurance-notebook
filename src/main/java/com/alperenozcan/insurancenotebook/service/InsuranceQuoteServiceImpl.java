@@ -89,7 +89,7 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 		}
 		
 		// Gender=0 means male, =1 female
-		double premium = (customer.isGender()) ? 0 : 200;
+		double premium = (customer.isGender()) ? 1000 : 1200;
 		
 		// body-mass index
 		premium += (customerHealthDetail.getWeight() / Math.pow(customerHealthDetail.getHeight()/100.0, 2.0)) * 50;

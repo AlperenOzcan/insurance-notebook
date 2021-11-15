@@ -29,7 +29,6 @@
 						<th>Insurance Type</th>
 						<th>Acceptance</th>
 						<th>Premium</th>
-						<th>Customer ID</th>
 						<th>Actions</th>
 					</tr>
 				</thead>
@@ -40,12 +39,15 @@
 						<td th:text="${tempInsuranceQuotes.insuranceType}"></td>
 						<td th:text="${tempInsuranceQuotes.acceptance}"></td>
 						<td th:text="${tempInsuranceQuotes.premium}"></td>
-						<td th:text="${tempInsuranceQuotes.customerId.id}"></td>
 						<td>
 							<a th:href="@{/insurance-quotes/delete(insuranceQuoteId=${tempInsuranceQuotes.id})}" class="btn btn-danger btn-sm"
 								onclick="if (!(confirm('Are you sure you want to delete this insurance quote?'))) return false">
 								Delete
 							</a>
+							<a th:href="@{/insurance-quotes/showFormForUpdate(quoteId=${tempInsuranceQuotes.id})}" class="btn btn-danger btn-sm" >
+								Update
+							</a>
+
 						</td>			
 					</tr>
 				</tbody>

@@ -17,8 +17,8 @@
 	
 		<div class="container">
 			
-			<h3>Quote Form</h3>
-			<hr>
+			<h3>Update Quote</h3>
+			<hr> 
 			
 			<p class="h4 mb-4">Save Quote</p>
 			
@@ -26,28 +26,17 @@
 							
 				<input type="hidden" th:field="*{id}" />		
 			
-				<!-- 
-				<label>Insurance Type</label>
-				<input type="text" th:field="*{insuranceType}" class="form-control mb-4 col-4" list="insuranceTypes">
-				<datalist id="insuranceTypes">
-					<option value="Health">
-					<option value="Car">
-				</datalist>
-			 	-->
-			 	
-			 	<label>Select Insurance Type</label>
-				<select th:field="*{insuranceType}" class="form-control mb-4 col-4">
-				    <option value="Health">Health</option>
-				    <option value="Car">Car</option>
-				 
-			    </select>
-				
+				<input type="hidden" th:field="*{insuranceType}" />
+			
 				<label>Acceptance</label>
-				<input type="text" th:field="*{acceptance}" class="form-control mb-4 col-4" placeholder="Acceptance">
+				<input type="text" th:field="*{acceptance}" class="form-control mb-4 col-4" placeholder="Insurance Type">
 				
-				<input type="hidden" th:field="*{customerId.id}" />		
+				<input type="hidden" th:field="*{customerId}" />		
 									
-				<button type="submit" class="btn btn-info col-2">Save</button>
+				<button type="submit" class="btn btn-info col-2"
+						onclick="if (!(confirm('Are you sure you want to change the status of this insurance quote?'))) return false">
+					Update
+				</button>
 			
 			</form>
 			
