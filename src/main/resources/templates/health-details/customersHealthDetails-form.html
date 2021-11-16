@@ -28,19 +28,20 @@
 			
 				<label>Weight</label>
 				<input type="text" th:field="*{weight}" class="form-control mb-4 col-4" placeholder="Weight">
+				
+				<br>
 			
+				<h5><b>Diseases</b></h5>
 				<label>Had Cancer</label>
 				<input type="checkbox" th:field="*{hadCancer}"> <br>
 				
-				<label>Had HeartAttack</label>
+				<label>Had Heart Attack</label>
 				<input type="checkbox" th:field="*{hadHeartAttack}"> <br>
 				
 				<label>Has Diabetes</label>
 				<input type="checkbox" th:field="*{hasDiabetes}"> <br><br>
 		
 				<input type="hidden" th:field="*{customer.id}">
-			
-				<input type="hidden" th:field="*{customer.personalIdentificationNumber}">
 				
 				<input type="hidden" th:field="*{customer.firstName}">
 		

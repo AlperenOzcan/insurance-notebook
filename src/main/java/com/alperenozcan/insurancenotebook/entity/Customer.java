@@ -17,9 +17,6 @@ public class Customer {
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="personal_identification_number")
-	private String personalIdentificationNumber;
-	
 	@Column(name="first_name")
 	private String firstName;
 	
@@ -36,8 +33,7 @@ public class Customer {
 		
 	}
 	
-	public Customer(String personalIdentificationNumber, String firstName, String lastName, boolean gender) {
-		this.personalIdentificationNumber = personalIdentificationNumber;
+	public Customer(String firstName, String lastName, boolean gender) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.gender = gender;
@@ -50,14 +46,6 @@ public class Customer {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getPersonalIdentificationNumber() {
-		return personalIdentificationNumber;
-	}
-
-	public void setPersonalIdentificationNumber(String personalIdentificationNumber) {
-		this.personalIdentificationNumber = personalIdentificationNumber;
 	}
 
 	public String getFirstName() {
@@ -88,8 +76,7 @@ public class Customer {
 	// toString
 	@Override
 	public String toString() {
-		return "id=" + id + ", personalIdentificationNumber=" + personalIdentificationNumber + 
-				", firstName=" + firstName + ", lastName=" + lastName + 
+		return "id=" + id  + ", firstName=" + firstName + ", lastName=" + lastName + 
 				", gender=" + gender + "]";
 	}
 

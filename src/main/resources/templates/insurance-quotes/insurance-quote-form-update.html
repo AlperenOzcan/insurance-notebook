@@ -29,7 +29,11 @@
 				<input type="hidden" th:field="*{insuranceType}" />
 			
 				<label>Acceptance</label>
-				<input type="text" th:field="*{acceptance}" class="form-control mb-4 col-4" placeholder="Insurance Type">
+				<input type="checkbox" th:field="*{acceptance}">
+				
+				<input type="hidden" th:field="*{customerId.id}" />		
+									
+				<br><br>
 				
 				<input type="hidden" th:field="*{customerId}" />		
 									

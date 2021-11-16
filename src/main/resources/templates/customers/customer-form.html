@@ -25,21 +25,20 @@
 			<form action="#" th:action="@{/customers/save}" th:object="${customer}" method="POST">
 			
 				<input type="hidden" th:field="*{id}" />			
-			
-				<label>Personal Identification Number</label>
-				<input type="text" th:field="*{personalIdentificationNumber}" class="form-control mb-4 col-4" placeholder="Personal Identification Number">
-			
-				<label>First Name</label>
+						
+				<label><b>First Name</b></label>
 				<input type="text" th:field="*{firstName}" class="form-control mb-4 col-4" placeholder="First Name">
 			
-				<label>Last Name</label>
+				<label><b>Last Name</b></label>
 				<input type="text" th:field="*{lastName}" class="form-control mb-4 col-4" placeholder="Last Name">
 				
-				<label>Gender</label>
-				<input type="text" th:field="*{gender}" class="form-control mb-4 col-4" placeholder="Gender">
+				<label><b>Gender</b></label> <br>
+				<input type="radio" th:field="*{gender}" value="1" checked='checked' >
+				<label>Female</label> <br>				
+				<input type="radio" th:field="*{gender}" value="0">
+				<label>Male</label> <br><br>
 					
 				<button type="submit" class="btn btn-info col-2">Save</button>
-			
 			</form>
 			
 			<hr>

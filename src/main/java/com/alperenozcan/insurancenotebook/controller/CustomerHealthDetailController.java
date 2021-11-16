@@ -66,7 +66,7 @@ public class CustomerHealthDetailController {
 		else {
 			
 			Customer tempCustomer = customerService.findById(theId);
-			theModel.addAttribute("customerHealthDetail", new CustomerHealthDetail(0, 0, false, false, false, tempCustomer));
+			theModel.addAttribute("customerHealthDetail", new CustomerHealthDetail(1, 1, false, false, false, tempCustomer));
 		}
 
 		return "health-details/customersHealthDetails-form";		

@@ -20,7 +20,7 @@
 			<h3>Quote Form</h3>
 			<hr>
 			
-			<p class="h4 mb-4">Save Quote</p>
+			<p class="h4 mb-4">Get New Quote</p>
 			
 			<form action="#" th:action="@{/insurance-quotes/save}" th:object="${quote}" method="POST">
 							
@@ -43,11 +43,13 @@
 			    </select>
 				
 				<label>Acceptance</label>
-				<input type="text" th:field="*{acceptance}" class="form-control mb-4 col-4" placeholder="Acceptance">
+				<input type="checkbox" th:field="*{acceptance}">
 				
 				<input type="hidden" th:field="*{customerId.id}" />		
 									
-				<button type="submit" class="btn btn-info col-2">Save</button>
+				<br><br>
+				
+				<button type="submit" class="btn btn-info col-2">Get Quote</button>
 			
 			</form>
 			
