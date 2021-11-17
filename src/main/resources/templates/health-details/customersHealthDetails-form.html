@@ -23,11 +23,11 @@
 			
 				<input type="hidden" th:field="*{id}" />
 			
-				<label>Height</label>
-				<input type="text" th:field="*{height}" class="form-control mb-4 col-4" placeholder="Height">
+				<label>Height (cm)</label>
+				<input type="number" th:field="*{height}" class="form-control mb-4 col-4" placeholder="Height" max="999" min="1">
 			
-				<label>Weight</label>
-				<input type="text" th:field="*{weight}" class="form-control mb-4 col-4" placeholder="Weight">
+				<label>Weight (kg)</label>
+				<input type="number" th:field="*{weight}" class="form-control mb-4 col-4" placeholder="Weight" max="999" min="1">
 				
 				<br>
 			

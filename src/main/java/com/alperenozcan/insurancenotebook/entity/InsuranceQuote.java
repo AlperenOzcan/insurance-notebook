@@ -1,5 +1,7 @@
 package com.alperenozcan.insurancenotebook.entity;
 
+import java.sql.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +31,9 @@ public class InsuranceQuote {
 	@Column(name="premium")
 	private double premium;
 	
+	@Column(name="date")
+	private Date date;
+	
 	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="customer_id")
 	private Customer customerId;
@@ -40,11 +45,12 @@ public class InsuranceQuote {
 		
 	}
 
-	public InsuranceQuote(String insuranceType, boolean acceptance, double premium, Customer customerId) {
+	public InsuranceQuote(String insuranceType, boolean acceptance, double premium, Customer customerId, Date date) {
 		this.insuranceType = insuranceType;
 		this.acceptance = acceptance;
 		this.premium = premium;
 		this.customerId = customerId;
+		this.date = date;
 	}
 
 	
@@ -88,14 +94,20 @@ public class InsuranceQuote {
 	public void setCustomerId(Customer customerId) {
 		this.customerId = customerId;
 	}
-
 	
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+
 	// toString
 	@Override
 	public String toString() {
 		return "InsuranceQuote [id=" + id + ", insuranceType=" + insuranceType + ", acceptance=" + acceptance
-				+ ", premium=" + premium + ", customerId=" + customerId + "]";
+				+ ", premium=" + premium + ", date=" + date + ", customerId=" + customerId + "]";
 	}
-	
 	
 }

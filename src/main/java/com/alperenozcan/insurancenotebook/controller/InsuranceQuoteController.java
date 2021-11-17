@@ -1,5 +1,6 @@
 package com.alperenozcan.insurancenotebook.controller;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -70,7 +71,6 @@ public class InsuranceQuoteController {
 			return customerHealthDetailController.showFormForUpdate(theId, theModel);
 		}
 		
-		
 		InsuranceQuote theQuote = new InsuranceQuote();
 		
 		theQuote.setCustomerId(customerService.findById(theId));
@@ -82,6 +82,8 @@ public class InsuranceQuoteController {
 	
 	@PostMapping("/save")
 	public String saveQuote(@ModelAttribute("quote") InsuranceQuote theQuote) {
+		
+		theQuote.setDate(new Date(System.currentTimeMillis()));		
 		
 		insuranceQuoteService.save(theQuote);
 		
