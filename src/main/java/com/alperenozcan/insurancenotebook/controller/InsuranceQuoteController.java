@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.alperenozcan.insurancenotebook.entity.Customer;
 import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
 import com.alperenozcan.insurancenotebook.service.CustomerHealthDetailService;
@@ -51,11 +52,13 @@ public class InsuranceQuoteController {
 	public String listCustomersInsuranceQuotes(@RequestParam("customerId") int theCustomerId, Model theModel) {
 		
 		Optional<List<InsuranceQuote>> quoteList = insuranceQuoteService.findByCustomerId(theCustomerId);
-		
 		List<InsuranceQuote> resultQuoteList = quoteList.get();
 		
 		theModel.addAttribute("insuranceQuotes", resultQuoteList);
-		theModel.addAttribute("theCustomerId", theCustomerId);
+		
+		Customer theCustomer = customerService.findById(theCustomerId);
+		
+		theModel.addAttribute("customer", theCustomer);
 		
 		return "insurance-quotes/list-theCustomer-insuranceQuotes";
 	}

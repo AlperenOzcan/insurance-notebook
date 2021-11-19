@@ -15,10 +15,18 @@
 	<body>
 		<div class="container">
 		
-			<h3>Past Insurance Quotes</h3>
+			<h2>Past Insurance Quotes</h2>
 			<hr><hr>
 			
-			<a th:href="@{/insurance-quotes/showFormForAdd(customerId=${theCustomerId})}" class="btn btn-primary btn-sm mb-3">
+			<div>
+				<h5> <b>Customer</b> </h5>  
+				<span th:text="${customer.firstName}">First Name</span>
+				<span th:text="${customer.lastName}">Last Name</span> <br>
+				
+				<br><br>
+			</div>
+			
+			<a th:href="@{/insurance-quotes/showFormForAdd(customerId=${customer.id})}" class="btn btn-primary btn-sm mb-3">
 				Get New Quote
 			</a>
 			
