@@ -25,21 +25,12 @@
 			<form action="#" th:action="@{/insurance-quotes/save}" th:object="${quote}" method="POST">
 							
 				<input type="hidden" th:field="*{id}" />		
-			
-				<!-- 
-				<label>Insurance Type</label>
-				<input type="text" th:field="*{insuranceType}" class="form-control mb-4 col-4" list="insuranceTypes">
-				<datalist id="insuranceTypes">
-					<option value="Health">
-					<option value="Car">
-				</datalist>
-			 	-->
-			 	
+						 	
 			 	<label>Select Insurance Type</label>
 				<select th:field="*{insuranceType}" class="form-control mb-4 col-4">
 				    <option value="Health">Health</option>
-				    <option value="Car">Car</option>
-				 
+				    <option value="Automobile">Automobile</option>
+				 	<option value="Earthquake">Earthquake</option>
 			    </select>
 				
 				<label>Acceptance</label>

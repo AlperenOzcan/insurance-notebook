@@ -20,6 +20,9 @@ public class CustomerHealthDetail {
 	@Column(name="id")
 	private int id;	
 	
+	@Column(name="age")
+	private int age;
+	
 	@Column(name="height")
 	private int height;
 	
@@ -46,8 +49,9 @@ public class CustomerHealthDetail {
 		
 	}
 
-	public CustomerHealthDetail(int height, int weight, boolean hadCancer, boolean hadHeartAttack, boolean hasDiabetes,
+	public CustomerHealthDetail(int age, int height, int weight, boolean hadCancer, boolean hadHeartAttack, boolean hasDiabetes,
 			Customer customer) {
+		this.age = age;
 		this.height = height;
 		this.weight = weight;
 		this.hadCancer = hadCancer;
@@ -66,6 +70,14 @@ public class CustomerHealthDetail {
 		this.id = id;
 	}
 
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+	
 	public int getHeight() {
 		return height;
 	}
@@ -117,9 +129,9 @@ public class CustomerHealthDetail {
 	// toString
 	@Override
 	public String toString() {
-		return "CustomerHealthDetail [id=" + id + ", height=" + height + ", weight=" + weight + ", hadCancer="
-				+ hadCancer + ", hadHeartAttack=" + hadHeartAttack + ", hasDiabetes=" + hasDiabetes + ", customer="
-				+ customer + "]";
+		return "CustomerHealthDetail [id=" + id + ", age=" + age + ", height=" + height + ", weight=" + weight + 
+				", hadCancer=" + hadCancer + ", hadHeartAttack=" + hadHeartAttack + 
+				", hasDiabetes=" + hasDiabetes + ", customer=" + customer + "]";
 	}
 
 }
