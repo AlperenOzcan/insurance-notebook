@@ -98,8 +98,10 @@ public class InsuranceQuoteController {
 	public String showFormForUpdate(@RequestParam("quoteId") int theId, Model theModel) {
 		
 		InsuranceQuote insuranceQuote = insuranceQuoteService.findById(theId);
+		Customer customer = customerService.findById(insuranceQuote.getCustomerId().getId());
 	
 		theModel.addAttribute("quote", insuranceQuote);
+		theModel.addAttribute("theCustomer", customer);
 	
 		return "insurance-quotes/insurance-quote-form-update";
 	}

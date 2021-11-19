@@ -14,13 +14,29 @@
 	</head>
 	
 	<body>
-	
 		<div class="container">
 			
-			<h3>Update Quote</h3>
+			<h2>Update Quote</h2>
 			<hr> 
 			
-			<p class="h4 mb-4">Save Quote</p>
+			<div>
+				<h4> Customer Informations </h4>  
+				<div> 
+					<b>Name Surname:</b> 
+					<span th:text="${theCustomer.firstName}">First Name</span>
+					<span th:text="${theCustomer.lastName}">Last Name</span>
+				</div> 
+				<div>
+					<b>Insurance Type:</b>
+					<span th:text="${quote.insuranceType}">Type</span> <br>
+					<b>Last Quote:</b>
+					<span th:text="${quote.premium}"></span> <br>
+					<b>Last Quote's Date:</b>
+					<span th:text="${quote.date}"></span>
+				</div>
+			</div>
+			
+			<hr>
 			
 			<form action="#" th:action="@{/insurance-quotes/save}" th:object="${quote}" method="POST">
 							
