@@ -11,7 +11,7 @@ public interface AutomobileDetailService {
 
 	public AutomobileDetail findById(int theId);
 
-	public Optional<AutomobileDetail> findByCustomerId(int theCustomerId);
+	public Optional<List<AutomobileDetail>> findByCustomerId(int theCustomerId);
 	
 	public void save(AutomobileDetail theAutomobileDetail);
 	

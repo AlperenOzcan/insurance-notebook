@@ -39,7 +39,7 @@ public class AutomobileDetailServiceImpl implements AutomobileDetailService {
 			theAutomobileDetail = result.get();
 		}
 		else {
-			// we do not have any customerHealthDetail with given id
+			// we do not have any AutomobileDetail with given id
 			throw new RuntimeException("Did not find AutomobileDetail with id: " + theId);
 		}
 		
@@ -47,19 +47,19 @@ public class AutomobileDetailServiceImpl implements AutomobileDetailService {
 	}
 
 	@Override
-	public Optional<AutomobileDetail> findByCustomerId(int theCustomerId) {
+	public Optional<List<AutomobileDetail>> findByCustomerId(int theCustomerId) {
 		Optional<Customer> theCustomer = customerRepository.findById(theCustomerId);
 		
-		Optional<AutomobileDetail> theAutomobileDetail = Optional.empty();
-		if(theAutomobileDetail.isPresent()) {
-			Optional<AutomobileDetail> result = automobileDetailRepository.findByCustomerId(theCustomerId);	
-			theAutomobileDetail = result;
+		Optional<List<AutomobileDetail>>  result = Optional.empty();
+		if(theCustomer.isPresent()) {
+			Optional<List<AutomobileDetail>> automobileDetails = automobileDetailRepository.findByCustomerId(theCustomerId);	
+			result = automobileDetails;
 		}
 		else {
-			throw new RuntimeException("Did not find AutomobileDetail with customerId: " + theCustomerId);
+			throw new RuntimeException("Did not find customer with customerId: " + theCustomerId);
 		}
 		
-		return theAutomobileDetail;
+		return result;
 	}
 
 	@Override
