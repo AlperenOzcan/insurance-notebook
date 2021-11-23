@@ -75,7 +75,7 @@ public class AutomobileDetailController {
 	@PostMapping("/save")
 	public String saveAutomobileDetail(@ModelAttribute("automobileDetail") AutomobileDetail theAutomobileDetail) {
 		automobileDetailService.save(theAutomobileDetail);
-		return "redirect:/customers/list";
+		return "redirect:/automobile-details/list-customer-automobile-details?customerId="+theAutomobileDetail.getCustomerId().getId();
 	}
 	
 	@GetMapping("/showFormForUpdate")
@@ -84,9 +84,9 @@ public class AutomobileDetailController {
 		Customer customer = customerService.findById(theAutomobileDetail.getCustomerId().getId());
 		
 		theModel.addAttribute("automobile", theAutomobileDetail);
-		theModel.addAttribute("theCustomer", customer);
+		theModel.addAttribute("customer", customer);
 		
-		return "automobile-details/automobile-details-form-update";
+		return "automobile-details/automobile-details-form";
 	}
 	
 	@GetMapping("/delete")

@@ -28,17 +28,17 @@
 						 	
 			 	<label>Select Insurance Type</label>
 				<select th:field="*{insuranceType}" class="form-control mb-4 col-4">
-				    <option value="Health">Health</option>
-				    <option value="Automobile">Automobile</option>
-				 	<option value="Earthquake">Earthquake</option>
+				    <th:block th:each="tempType : ${availableInsuranceTypes}" > 
+					    <option th:value="${tempType}" th:text="${tempType}"></option>
+			    	</th:block>
 			    </select>
 				
-				<label>Acceptance</label>
-				<input type="checkbox" th:field="*{acceptance}">
+				
+				<input type="hidden" th:field="*{acceptance}" />
 				
 				<input type="hidden" th:field="*{customerId.id}" />		
 									
-				<br><br>
+				<br>
 				
 				<button type="submit" class="btn btn-info col-2">Get Quote</button>
 			
@@ -48,8 +48,17 @@
 			
 			<a th:href="@{/insurance-quotes/list-customer-quotes(customerId=${quote.customerId.id})}">Cancel</a>
 			
+			<span th:if="${warning == true}">
+				<br><br><br>
+				<span class="alert alert-warning" role="alert">
+					For Health and Automobile Insurances, you need to fill Health Detail Form!
+				 	<a th:href="@{/customer-health-details/showFormForUpdate(customerId=${quote.customerId.id})}" class="alert-link">
+				  		Click here to see the form
+				 	</a>.
+				</span>
+			</span>
+			
 		</div>
 		
 	</body>
-
 </html>

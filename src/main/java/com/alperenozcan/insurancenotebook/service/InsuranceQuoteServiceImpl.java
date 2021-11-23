@@ -6,9 +6,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.alperenozcan.insurancenotebook.dao.AutomobileDetailRepository;
 import com.alperenozcan.insurancenotebook.dao.CustomerHealthDetailRepository;
 import com.alperenozcan.insurancenotebook.dao.CustomerRepository;
 import com.alperenozcan.insurancenotebook.dao.InsuranceQuoteRepository;
+import com.alperenozcan.insurancenotebook.entity.AutomobileDetail;
 import com.alperenozcan.insurancenotebook.entity.Customer;
 import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
@@ -19,13 +21,16 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 	private InsuranceQuoteRepository insuranceQuoteRepository;
 	private CustomerRepository customerRepository;
 	private CustomerHealthDetailRepository customerHealthDetailRepository;
+	private AutomobileDetailRepository automobileDetailRepository;
 	
 	@Autowired
 	public InsuranceQuoteServiceImpl(InsuranceQuoteRepository insuranceQuoteRepository,
-			CustomerRepository customerRepository, CustomerHealthDetailRepository customerHealthDetailRepository) {
+			CustomerRepository customerRepository, CustomerHealthDetailRepository customerHealthDetailRepository,
+			AutomobileDetailRepository automobileDetailRepository) {
 		this.insuranceQuoteRepository = insuranceQuoteRepository;
 		this.customerRepository = customerRepository;
 		this.customerHealthDetailRepository = customerHealthDetailRepository;
+		this.automobileDetailRepository = automobileDetailRepository;
 	}
 
 	@Override
@@ -67,7 +72,7 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 
 	@Override
 	public void save(InsuranceQuote theInsuranceQuote) {
-		double premium = calculatePremium(theInsuranceQuote.getCustomerId().getId());
+		double premium = calculatePremium(theInsuranceQuote);
 
 		theInsuranceQuote.setPremium(premium);
 		
@@ -80,14 +85,30 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 	}
 
 	
-	private double calculatePremium(int theCustomerId) {
+	private double calculatePremium(InsuranceQuote theInsuranceQuote) {
+		
+		// get insurance type
+		String type = theInsuranceQuote.getInsuranceType();
+		int theCustomerId = theInsuranceQuote.getCustomerId().getId();
+		int quoteId = theInsuranceQuote.getId();
+		
+		switch(type) {
+			case "Health":
+				return calculateHealthInsurancePremium(theCustomerId);
+			case "Automobile":
+				return calculateAutomobileInsurancePremium(theCustomerId, quoteId);
+			case "Earthquake":
+				return calculateEartquakeInsurancePremium(theCustomerId);
+			default:
+				throw new RuntimeException("No such insurance type. Type: " + type);
+		}
+	}
+
+	
+	private double calculateHealthInsurancePremium(int theCustomerId) {
 		CustomerHealthDetail customerHealthDetail = customerHealthDetailRepository.findByCustomerId(theCustomerId).get();
 		Customer customer = customerRepository.findById(theCustomerId).get();
-		
-		if (customerHealthDetail == null) {
-			return 1000000000.00;		// 1 Billion
-		}
-		
+
 		// Gender=0 means male, =1 female
 		double premium = (customer.isGender()) ? 1000 : 1200;
 		
@@ -101,7 +122,36 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 		
 		return premium;
 	}
-
+	
+	private double calculateAutomobileInsurancePremium(int theCustomerId, int quoteId) {
+		AutomobileDetail automobileDetail = automobileDetailRepository.findById(quoteId).get(); // this line may need to be changed
+		CustomerHealthDetail customerHealthDetail = customerHealthDetailRepository.findByCustomerId(theCustomerId).get();
+		
+		double premium = 0.0;
+		
+		automobileDetail.setHealth_score(calculateHealthScore(customerHealthDetail));
+		premium += automobileDetail.getHealth_score()*250;
+		premium += (automobileDetail.getAge())*100;
+		premium += (automobileDetail.getKilometer())*0.01;
+		if((15-(automobileDetail.getExperience())) > 0) {
+			premium += 15-(automobileDetail.getExperience())*50;
+		}
+		
+		return premium;
+	}
+	
+	private double calculateEartquakeInsurancePremium(int theCustomerId) {
+		
+		return 124.0;
+	}
 	
 	
+	private int calculateHealthScore(CustomerHealthDetail customerHealthDetail) {
+		int score = 0;
+		
+		score += (customerHealthDetail.isHadHeartAttack()) ? 5 : 0;
+		score += (customerHealthDetail.isHasDiabetes()) ? 4 : 0;
+		
+		return score;
+	}
 }

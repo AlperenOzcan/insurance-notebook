@@ -12,4 +12,7 @@ public interface AutomobileDetailRepository extends JpaRepository<AutomobileDeta
 
 	@Query("from AutomobileDetail where customer_id=:theCustomerId")
 	Optional<List<AutomobileDetail>> findByCustomerId(int theCustomerId);
+	
+	@Query("from AutomobileDetail where customer_id=:theCustomerId and id=:theAutomobileDetailId")
+	Optional<AutomobileDetail> findByCustomerAndAutomobileId(int theCustomerId, int theAutomobileDetailId);
 }

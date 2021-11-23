@@ -1,6 +1,7 @@
 package com.alperenozcan.insurancenotebook.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,16 +67,26 @@ public class InsuranceQuoteController {
 	@GetMapping("/showFormForAdd")
 	public String showFormForAdd(@RequestParam("customerId") int theId, Model theModel) {
 		
+		List<String> availableInsuranceTypes = new ArrayList<String>();
+		availableInsuranceTypes.add("Earthquake");
+		
+		boolean warning = false;
+		
 		// check given customer has health detail or not
 		Optional<CustomerHealthDetail> customerHealtDetail = customerHealthDetailService.findByCustomerId(theId);
 		
-		if (customerHealtDetail.isEmpty()) {
-			
-			return customerHealthDetailController.showFormForUpdate(theId, theModel);
+		if (customerHealtDetail.isPresent()) {
+			availableInsuranceTypes.add("Health");
+			availableInsuranceTypes.add("Automobile");
 		}
+		else {
+			warning = true;
+			// return customerHealthDetailController.showFormForUpdate(theId, theModel);
+		}
+		theModel.addAttribute("availableInsuranceTypes", availableInsuranceTypes);
+		theModel.addAttribute("warning", warning);
 		
 		InsuranceQuote theQuote = new InsuranceQuote();
-		
 		theQuote.setCustomerId(customerService.findById(theId));
 		
 		theModel.addAttribute("quote", theQuote);

@@ -38,7 +38,7 @@
 			
 				<!-- For future work, it will be auto computed -->
 				<label>Driver's Health Score</label>
-				<input type="number" th:field="*{experience}" class="form-control mb-4 col-4" placeholder="Used Kilometer" max="999" min="0">
+				<input type="number" th:field="*{health_score}" class="form-control mb-4 col-4" placeholder="Used Kilometer" max="9" min="0">
 			
 				<input type="hidden" th:field="*{customerId}" />
 			
@@ -47,7 +47,7 @@
 			
 			
 			<br>
-			<a th:href="@{/customers/list}">Back to Customer List</a>
+			<a th:href="@{/automobile-details/list-customer-automobile-details(customerId=${customer.id})}">Back to Automobile Detail List</a>
 		
 		
 		</div>
