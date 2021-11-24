@@ -34,10 +34,8 @@ public class InsuranceQuote {
 	@Column(name="date")
 	private Date date;
 	
-	@OneToOne(cascade=CascadeType.MERGE)
-	@JoinColumn(name="customer_id")
-	private Customer customerId;
-	
+	@Column(name="detail_id")
+	private int detailId;
 	
 	// Constructors
 	// No-argument constructor needed for Hibernate
@@ -45,11 +43,11 @@ public class InsuranceQuote {
 		
 	}
 
-	public InsuranceQuote(String insuranceType, boolean acceptance, double premium, Customer customerId, Date date) {
+	public InsuranceQuote(String insuranceType, boolean acceptance, double premium,int detailId, Date date) {
 		this.insuranceType = insuranceType;
 		this.acceptance = acceptance;
 		this.premium = premium;
-		this.customerId = customerId;
+		this.detailId = detailId;
 		this.date = date;
 	}
 
@@ -87,14 +85,6 @@ public class InsuranceQuote {
 		this.premium = premium;
 	}
 
-	public Customer getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(Customer customerId) {
-		this.customerId = customerId;
-	}
-	
 	public Date getDate() {
 		return date;
 	}
@@ -102,12 +92,20 @@ public class InsuranceQuote {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	
+	public int getDetailId() {
+		return detailId;
+	}
+
+	public void setDetailId(int detailId) {
+		this.detailId = detailId;
+	}
 
 	// toString
 	@Override
 	public String toString() {
 		return "InsuranceQuote [id=" + id + ", insuranceType=" + insuranceType + ", acceptance=" + acceptance
-				+ ", premium=" + premium + ", date=" + date + ", customerId=" + customerId + "]";
+				+ ", premium=" + premium + ", date=" + date + ", detailId=" + detailId + "]";
 	}
 	
 }

@@ -1,7 +1,6 @@
 package com.alperenozcan.insurancenotebook.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
 
@@ -11,9 +10,13 @@ public interface InsuranceQuoteService {
 	
 	public InsuranceQuote findById(int theId);
 	
-	public Optional<List<InsuranceQuote>> findByCustomerId(int theCustomerId);
+	public List<InsuranceQuote> findByDetailId(int theDetailId);
 
+	public List<InsuranceQuote> findByDetailIdAndInsuranceType(int theDetailId, String theType);
+	
 	public void save (InsuranceQuote theInsuranceQuote);
 	
 	public void deleteById(int theId);
+	
+	public void deleteByDetailId(int theDetailId);
 }

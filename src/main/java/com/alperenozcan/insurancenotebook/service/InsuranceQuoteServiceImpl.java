@@ -19,20 +19,66 @@ import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
 public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 
 	private InsuranceQuoteRepository insuranceQuoteRepository;
-	private CustomerRepository customerRepository;
-	private CustomerHealthDetailRepository customerHealthDetailRepository;
-	private AutomobileDetailRepository automobileDetailRepository;
 	
 	@Autowired
-	public InsuranceQuoteServiceImpl(InsuranceQuoteRepository insuranceQuoteRepository,
-			CustomerRepository customerRepository, CustomerHealthDetailRepository customerHealthDetailRepository,
-			AutomobileDetailRepository automobileDetailRepository) {
+	public InsuranceQuoteServiceImpl(InsuranceQuoteRepository insuranceQuoteRepository) {
 		this.insuranceQuoteRepository = insuranceQuoteRepository;
-		this.customerRepository = customerRepository;
-		this.customerHealthDetailRepository = customerHealthDetailRepository;
-		this.automobileDetailRepository = automobileDetailRepository;
 	}
 
+	@Override
+	public List<InsuranceQuote> findAll() {
+		return insuranceQuoteRepository.findAll();
+	}
+
+	@Override
+	public InsuranceQuote findById(int theId) {
+		
+		if (insuranceQuoteRepository.findById(theId).isPresent()) {
+			return insuranceQuoteRepository.findById(theId).get();
+		}
+		throw new RuntimeException("No such insurance quote with id: " + theId);
+	}
+
+	@Override
+	public List<InsuranceQuote> findByDetailId(int theDetailId) {
+		Optional<List<InsuranceQuote>> list = insuranceQuoteRepository.findByDetailId(theDetailId);
+		
+		if (list.isPresent()) {
+			return list.get();
+		}
+		throw new RuntimeException("No insurance quote with detailId: " + theDetailId);
+	}
+
+	@Override
+	public List<InsuranceQuote> findByDetailIdAndInsuranceType(int theDetailId, String theType) {
+		Optional<List<InsuranceQuote>> list = insuranceQuoteRepository.findByDetailIdAndInsuranceType(theDetailId, theType);
+		if (list.isPresent()) {
+			return list.get();
+		}
+		throw new RuntimeException("No insurance quote with detailId: " + theDetailId);
+	}
+
+	@Override
+	public void save(InsuranceQuote theInsuranceQuote) {
+		// double premium = calculatePremium(theInsuranceQuote);
+
+		double premium = 100.0;
+		theInsuranceQuote.setPremium(premium);
+		insuranceQuoteRepository.save(theInsuranceQuote);
+	}
+
+	@Override
+	public void deleteById(int theId) {
+		insuranceQuoteRepository.deleteById(theId);
+	}
+
+	@Override
+	public void deleteByDetailId(int theDetailId) {
+		insuranceQuoteRepository.deleteByDetailId(theDetailId);
+	}
+
+	
+/*
 	@Override
 	public List<InsuranceQuote> findAll() {
 		return insuranceQuoteRepository.findAll();
@@ -154,4 +200,6 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 		
 		return score;
 	}
+	
+*/
 }
