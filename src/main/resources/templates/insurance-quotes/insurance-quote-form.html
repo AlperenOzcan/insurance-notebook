@@ -32,12 +32,9 @@
 					    <option th:value="${tempType}" th:text="${tempType}"></option>
 			    	</th:block>
 			    </select>
-				
-				
+								
 				<input type="hidden" th:field="*{acceptance}" />
-				
-				<input type="hidden" th:field="*{customerId.id}" />		
-									
+																	
 				<br>
 				
 				<button type="submit" class="btn btn-info col-2">Get Quote</button>
@@ -46,6 +43,7 @@
 			
 			<hr>
 			
+			<!-- 
 			<a th:href="@{/insurance-quotes/list-customer-quotes(customerId=${quote.customerId.id})}">Cancel</a>
 			
 			<span th:if="${warning == true}">
@@ -57,7 +55,7 @@
 				 	</a>.
 				</span>
 			</span>
-			
+			 -->
 		</div>
 		
 	</body>

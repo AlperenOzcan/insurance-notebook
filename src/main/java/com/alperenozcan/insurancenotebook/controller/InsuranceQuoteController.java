@@ -1,6 +1,5 @@
 package com.alperenozcan.insurancenotebook.controller;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -8,14 +7,14 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.alperenozcan.insurancenotebook.entity.AutomobileDetail;
 import com.alperenozcan.insurancenotebook.entity.Customer;
 import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
+import com.alperenozcan.insurancenotebook.service.AutomobileDetailService;
 import com.alperenozcan.insurancenotebook.service.CustomerHealthDetailService;
 import com.alperenozcan.insurancenotebook.service.CustomerService;
 import com.alperenozcan.insurancenotebook.service.InsuranceQuoteService;
@@ -28,14 +27,17 @@ public class InsuranceQuoteController {
 	private CustomerService customerService;
 	private CustomerHealthDetailService customerHealthDetailService;
 	private CustomerHealthDetailController customerHealthDetailController;
+	private AutomobileDetailService automobileDetailService;
 	
 
 	public InsuranceQuoteController (InsuranceQuoteService insuranceQuoteService, CustomerService customerService,
-			CustomerHealthDetailService customerHealthDetailService, CustomerHealthDetailController customerHealthDetailController) {
+			CustomerHealthDetailService customerHealthDetailService, CustomerHealthDetailController customerHealthDetailController,
+			AutomobileDetailService automobileDetailService) {
 		this.insuranceQuoteService = insuranceQuoteService;
 		this.customerService = customerService;
 		this.customerHealthDetailService = customerHealthDetailService;
 		this.customerHealthDetailController = customerHealthDetailController;
+		this.automobileDetailService = automobileDetailService;
 	}
 
 	
@@ -52,8 +54,30 @@ public class InsuranceQuoteController {
 	@GetMapping("/list-customer-quotes")
 	public String listCustomersInsuranceQuotes(@RequestParam("customerId") int theCustomerId, Model theModel) {
 		
-		Optional<List<InsuranceQuote>> quoteList = insuranceQuoteService.findByCustomerId(theCustomerId);
-		List<InsuranceQuote> resultQuoteList = quoteList.get();
+		// get health insurances
+		List<InsuranceQuote> healthQuoteList = null;
+		Optional<CustomerHealthDetail> healthDetail = customerHealthDetailService.findByCustomerId(theCustomerId);
+		if(healthDetail.isPresent()) {
+			healthQuoteList = insuranceQuoteService.findByDetailIdAndInsuranceType(healthDetail.get().getId(), "Health");
+			
+		}
+		
+		// get automobile insurances
+		Optional<List<AutomobileDetail>> automobileDetails = automobileDetailService.findByCustomerId(theCustomerId);
+		List<InsuranceQuote> automobileQuoteList = null; 
+		if (automobileDetails.isPresent()) {
+			for(AutomobileDetail automobileDetail: automobileDetails.get()) {
+				automobileQuoteList = insuranceQuoteService.findByDetailIdAndInsuranceType(automobileDetail.getId(), "Automobile");
+			}
+		}
+		
+		List<InsuranceQuote> resultQuoteList = new ArrayList<>();
+		if(healthQuoteList != null && !healthQuoteList.isEmpty()) {
+			resultQuoteList.addAll(healthQuoteList);
+		}
+		if(automobileQuoteList != null && !automobileQuoteList.isEmpty()) {
+			resultQuoteList.addAll(automobileQuoteList);			
+		}
 		
 		theModel.addAttribute("insuranceQuotes", resultQuoteList);
 		
@@ -70,30 +94,41 @@ public class InsuranceQuoteController {
 		List<String> availableInsuranceTypes = new ArrayList<String>();
 		availableInsuranceTypes.add("Earthquake");
 		
-		boolean warning = false;
+		List<AutomobileDetail> customersAutomobiles = new ArrayList<AutomobileDetail>();
+		
+		// boolean warning = false;
 		
 		// check given customer has health detail or not
 		Optional<CustomerHealthDetail> customerHealtDetail = customerHealthDetailService.findByCustomerId(theId);
 		
 		if (customerHealtDetail.isPresent()) {
 			availableInsuranceTypes.add("Health");
-			availableInsuranceTypes.add("Automobile");
+			
+			Optional<List<AutomobileDetail>> automobiles = automobileDetailService.findByCustomerId(theId);
+			if (automobiles.isPresent()) {
+				availableInsuranceTypes.add("Automobile");
+				customersAutomobiles.addAll(automobiles.get());
+			}
 		}
-		else {
+		/*else {
 			warning = true;
 			// return customerHealthDetailController.showFormForUpdate(theId, theModel);
-		}
+		}*/
 		theModel.addAttribute("availableInsuranceTypes", availableInsuranceTypes);
-		theModel.addAttribute("warning", warning);
+		//theModel.addAttribute("warning", warning);
+		theModel.addAttribute("customersAutomobiles", customersAutomobiles);
 		
 		InsuranceQuote theQuote = new InsuranceQuote();
-		theQuote.setCustomerId(customerService.findById(theId));
+		//theQuote.setCustomerId(customerService.findById(theId));
 		
 		theModel.addAttribute("quote", theQuote);
 		
 		return "insurance-quotes/insurance-quote-form";
 	}
 	
+	
+	
+	/*
 	@PostMapping("/save")
 	public String saveQuote(@ModelAttribute("quote") InsuranceQuote theQuote) {
 		
@@ -117,12 +152,33 @@ public class InsuranceQuoteController {
 		return "insurance-quotes/insurance-quote-form-update";
 	}
 	
+	
 	@GetMapping("/delete")
 	public String deleteInsuranceQuote(@RequestParam("insuranceQuoteId") int theQuoteId) {
 		
 		int customerId = insuranceQuoteService.findById(theQuoteId).getCustomerId().getId();
 		
 		insuranceQuoteService.deleteById(theQuoteId);
+		
+		return "redirect:/insurance-quotes/list-customer-quotes?customerId=" + customerId;
+	}
+	*/
+	
+	@GetMapping("/delete")
+	public String deleteInsuranceQuote(@RequestParam("detailId") int detailId, @RequestParam("insuranceType") String insuranceType) {
+		
+		insuranceQuoteService.deleteByDetailIdAndInsuranceType(detailId, insuranceType);
+		
+		int customerId;
+		if(insuranceType.equals("Health")) {
+			customerId = customerHealthDetailService.findById(detailId).getCustomer().getId();
+		}
+		else if(insuranceType.equals("Automobile")){
+			customerId = automobileDetailService.findById(detailId).getCustomerId().getId();
+		}
+		else {
+			throw new RuntimeException("No such insurance quote type");
+		}
 		
 		return "redirect:/insurance-quotes/list-customer-quotes?customerId=" + customerId;
 	}

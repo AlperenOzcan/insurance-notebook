@@ -5,14 +5,9 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.alperenozcan.insurancenotebook.dao.AutomobileDetailRepository;
-import com.alperenozcan.insurancenotebook.dao.CustomerHealthDetailRepository;
-import com.alperenozcan.insurancenotebook.dao.CustomerRepository;
 import com.alperenozcan.insurancenotebook.dao.InsuranceQuoteRepository;
-import com.alperenozcan.insurancenotebook.entity.AutomobileDetail;
-import com.alperenozcan.insurancenotebook.entity.Customer;
-import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
 
 @Service
@@ -68,16 +63,18 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteById(int theId) {
 		insuranceQuoteRepository.deleteById(theId);
 	}
 
 	@Override
-	public void deleteByDetailId(int theDetailId) {
-		insuranceQuoteRepository.deleteByDetailId(theDetailId);
+	@Transactional
+	public void deleteByDetailIdAndInsuranceType(int theDetailId, String theType) {
+		insuranceQuoteRepository.deleteByDetailIdAndInsuranceType(theDetailId, theType);
 	}
 
-	
+		
 /*
 	@Override
 	public List<InsuranceQuote> findAll() {

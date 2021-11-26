@@ -18,5 +18,6 @@ public interface InsuranceQuoteService {
 	
 	public void deleteById(int theId);
 	
-	public void deleteByDetailId(int theDetailId);
+	public void deleteByDetailIdAndInsuranceType(int theDetailId, String theType);
+	
 }
