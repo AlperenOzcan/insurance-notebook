@@ -76,7 +76,8 @@ public class CustomerServiceImpl implements CustomerService {
 			Optional<List<InsuranceQuote>> healthInsuranceQuote = insuranceQuoteRepository.findByDetailId(healthDetail.get().getId());
 			if (healthInsuranceQuote.isPresent()) {
 				for (InsuranceQuote quote: healthInsuranceQuote.get()) {
-					insuranceQuoteRepository.deleteById(quote.getId());
+					insuranceQuoteRepository.deleteByDetailIdAndInsuranceType(healthDetail.get().getId(), "Health");
+					// insuranceQuoteRepository.deleteById(quote.getId());
 				}
 			}
 			
@@ -93,7 +94,8 @@ public class CustomerServiceImpl implements CustomerService {
 				Optional<List<InsuranceQuote>> automobileInsuranceQuote = insuranceQuoteRepository.findByDetailId(detail.getId());
 				if (automobileInsuranceQuote.isPresent()) {
 					for(InsuranceQuote quote: automobileInsuranceQuote.get()) {
-						insuranceQuoteRepository.deleteById(quote.getId());
+						insuranceQuoteRepository.deleteByDetailIdAndInsuranceType(quote.getId(), "Automobile");
+						// insuranceQuoteRepository.deleteById(quote.getId());
 					}
 				}
 			}	

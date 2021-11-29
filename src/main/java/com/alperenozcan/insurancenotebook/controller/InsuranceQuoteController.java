@@ -1,5 +1,6 @@
 package com.alperenozcan.insurancenotebook.controller;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -7,6 +8,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -29,7 +33,8 @@ public class InsuranceQuoteController {
 	private CustomerHealthDetailController customerHealthDetailController;
 	private AutomobileDetailService automobileDetailService;
 	
-
+	private InsuranceQuote insuranceQuote;
+	
 	public InsuranceQuoteController (InsuranceQuoteService insuranceQuoteService, CustomerService customerService,
 			CustomerHealthDetailService customerHealthDetailService, CustomerHealthDetailController customerHealthDetailController,
 			AutomobileDetailService automobileDetailService) {
@@ -105,7 +110,7 @@ public class InsuranceQuoteController {
 			availableInsuranceTypes.add("Health");
 			
 			Optional<List<AutomobileDetail>> automobiles = automobileDetailService.findByCustomerId(theId);
-			if (automobiles.isPresent()) {
+			if (automobiles.isPresent() && automobiles.get().size() != 0) {
 				availableInsuranceTypes.add("Automobile");
 				customersAutomobiles.addAll(automobiles.get());
 			}
@@ -123,28 +128,85 @@ public class InsuranceQuoteController {
 		
 		theModel.addAttribute("quote", theQuote);
 		
+		theModel.addAttribute("customerId", theId);
+		
 		return "insurance-quotes/insurance-quote-form";
 	}
 	
 	
+	@PostMapping("/pre-save")
+	public String saveQuoteShell(@ModelAttribute("quote") InsuranceQuote theQuote, @RequestParam("customerId") int customerId, Model theModel) {
+		
+		if (theQuote.getInsuranceType().equals("Automobile")) {
+			
+			Optional<List<AutomobileDetail>> automobileList = automobileDetailService.findByCustomerId(customerId);
+			List<AutomobileDetail> resultAutomobileList = automobileList.get();
+			
+			theModel.addAttribute("automobileDetails", resultAutomobileList);
+			
+			Customer theCustomer = customerService.findById(customerId);
+			
+			theModel.addAttribute("customer", theCustomer);
+			
+			this.insuranceQuote = theQuote;
+			
+			return "insurance-quotes/select-customers-automobile";
+		}
+		
+		else if (theQuote.getInsuranceType().equals("Earthquake")) {
+			//return "müşterinin evlerinin listelendiği ve onlardan birini seçebildiği bir sayfaya yönlendir";
+			return "insurance-quotes/select-customers-house";
+		}
+		
+		else if (theQuote.getInsuranceType().equals("Health")) {
+			int detailId = customerHealthDetailService.findByCustomerId(customerId).get().getId();
+			theQuote.setDetailId(detailId);
+			saveQuoteCore(theQuote);
+			return "redirect:/insurance-quotes/list-customer-quotes?customerId="
+									+ customerHealthDetailService.findById(detailId).getCustomer().getId();
+		}
+		
+		else {
+			throw new RuntimeException("No such insurance quote type");
+		}
+	}
 	
-	/*
-	@PostMapping("/save")
-	public String saveQuote(@ModelAttribute("quote") InsuranceQuote theQuote) {
+	@GetMapping("/save-automobile-quote")
+	public String saveAutomobileQuote(@RequestParam("automobileId") int theId) {
+		InsuranceQuote quote = this.insuranceQuote;
+		quote.setDetailId(theId);
+		
+		quote.setDate(new Date(System.currentTimeMillis()));		
+		
+		insuranceQuoteService.save(quote);
+		
+		return "redirect:/insurance-quotes/list-customer-quotes?customerId=" 
+									+ automobileDetailService.findById(theId).getCustomer().getId();
+	}
+
+	private void saveQuoteCore(InsuranceQuote theQuote) {
 		
 		theQuote.setDate(new Date(System.currentTimeMillis()));		
 		
 		insuranceQuoteService.save(theQuote);
-		
-		// to prevent duplicate submission we use redirect
-		return "redirect:/insurance-quotes/list-customer-quotes?customerId=" + theQuote.getCustomerId().getId();
 	}
 	
+
 	@GetMapping("/showFormForUpdate")
 	public String showFormForUpdate(@RequestParam("quoteId") int theId, Model theModel) {
 		
 		InsuranceQuote insuranceQuote = insuranceQuoteService.findById(theId);
-		Customer customer = customerService.findById(insuranceQuote.getCustomerId().getId());
+		
+		Customer customer = null;
+		if (insuranceQuote.getInsuranceType().equals("Health")) {
+			customer = customerHealthDetailService.findById(insuranceQuote.getDetailId()).getCustomer();
+		}
+		else if (insuranceQuote.getInsuranceType().equals("Automobile")) {
+			customer = automobileDetailService.findById(insuranceQuote.getDetailId()).getCustomer();
+		}
+		else {
+			throw new RuntimeException("There is no such insurance type");
+		}
 	
 		theModel.addAttribute("quote", insuranceQuote);
 		theModel.addAttribute("theCustomer", customer);
@@ -152,7 +214,25 @@ public class InsuranceQuoteController {
 		return "insurance-quotes/insurance-quote-form-update";
 	}
 	
-	
+	@PostMapping("/update")
+	public String updateQuote(@ModelAttribute("quote") InsuranceQuote theInsuranceQuote) {
+		insuranceQuoteService.save(theInsuranceQuote);
+		
+		int customerId;
+		if (theInsuranceQuote.getInsuranceType().equals("Health")) {
+			customerId = customerHealthDetailService.findById(theInsuranceQuote.getDetailId()).getCustomer().getId();
+		}
+		else if (theInsuranceQuote.getInsuranceType().equals("Automobile")) {
+			customerId = automobileDetailService.findById(theInsuranceQuote.getDetailId()).getCustomer().getId();
+		}
+		else {
+			throw new RuntimeException("There is no such insurance type");
+		}
+		
+		return "redirect:/insurance-quotes/list-customer-quotes?customerId=" + customerId;
+	}
+
+	/*
 	@GetMapping("/delete")
 	public String deleteInsuranceQuote(@RequestParam("insuranceQuoteId") int theQuoteId) {
 		
@@ -165,16 +245,20 @@ public class InsuranceQuoteController {
 	*/
 	
 	@GetMapping("/delete")
-	public String deleteInsuranceQuote(@RequestParam("detailId") int detailId, @RequestParam("insuranceType") String insuranceType) {
+	public String deleteInsuranceQuote(@RequestParam("quoteId") int quoteId) {
 		
-		insuranceQuoteService.deleteByDetailIdAndInsuranceType(detailId, insuranceType);
+		// insuranceQuoteService.deleteByDetailIdAndInsuranceType(detailId, insuranceType);
+		int detailId = insuranceQuoteService.findById(quoteId).getDetailId();
+		String insuranceType = insuranceQuoteService.findById(quoteId).getInsuranceType();
+		
+		insuranceQuoteService.deleteById(quoteId);
 		
 		int customerId;
 		if(insuranceType.equals("Health")) {
 			customerId = customerHealthDetailService.findById(detailId).getCustomer().getId();
 		}
 		else if(insuranceType.equals("Automobile")){
-			customerId = automobileDetailService.findById(detailId).getCustomerId().getId();
+			customerId = automobileDetailService.findById(detailId).getCustomer().getId();
 		}
 		else {
 			throw new RuntimeException("No such insurance quote type");

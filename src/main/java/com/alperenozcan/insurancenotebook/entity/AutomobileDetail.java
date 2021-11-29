@@ -34,7 +34,7 @@ public class AutomobileDetail {
 	
 	@OneToOne(cascade=CascadeType.MERGE)
 	@JoinColumn(name="customer_id")
-	private Customer customerId;
+	private Customer customer;
 
 	
 	// Constructors
@@ -42,12 +42,12 @@ public class AutomobileDetail {
 		
 	}
 
-	public AutomobileDetail(int age, int experience, int kilometer, int health_score, Customer customerId) {
+	public AutomobileDetail(int age, int experience, int kilometer, int health_score, Customer customer) {
 		this.age = age;
 		this.experience = experience;
 		this.kilometer = kilometer;
 		this.health_score = health_score;
-		this.customerId = customerId;
+		this.customer = customer;
 	}
 
 	// Getters&Setters
@@ -91,19 +91,19 @@ public class AutomobileDetail {
 		this.health_score = health_score;
 	}
 
-	public Customer getCustomerId() {
-		return customerId;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setCustomerId(Customer customerId) {
-		this.customerId = customerId;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	// toString
 	@Override
 	public String toString() {
 		return "AutomobileDetail [id=" + id + ", age=" + age + ", experience=" + experience + ", kilometer=" + kilometer
-				+ ", health_score=" + health_score + ", customerId=" + customerId + "]";
+				+ ", health_score=" + health_score + ", customer=" + customer + "]";
 	}
 		
 }

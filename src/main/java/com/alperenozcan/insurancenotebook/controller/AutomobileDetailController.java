@@ -65,7 +65,7 @@ public class AutomobileDetailController {
 		
 		AutomobileDetail automobile = new AutomobileDetail();
 		
-		automobile.setCustomerId(customerService.findById(theId));
+		automobile.setCustomer(customerService.findById(theId));
 		
 		theModel.addAttribute("automobile", automobile);
 		
@@ -75,13 +75,13 @@ public class AutomobileDetailController {
 	@PostMapping("/save")
 	public String saveAutomobileDetail(@ModelAttribute("automobileDetail") AutomobileDetail theAutomobileDetail) {
 		automobileDetailService.save(theAutomobileDetail);
-		return "redirect:/automobile-details/list-customer-automobile-details?customerId="+theAutomobileDetail.getCustomerId().getId();
+		return "redirect:/automobile-details/list-customer-automobile-details?customerId="+theAutomobileDetail.getCustomer().getId();
 	}
 	
 	@GetMapping("/showFormForUpdate")
 	public String showFormForUpdate(@RequestParam("automobileDetailId") int theId, Model theModel) {
 		AutomobileDetail theAutomobileDetail = automobileDetailService.findById(theId);
-		Customer customer = customerService.findById(theAutomobileDetail.getCustomerId().getId());
+		Customer customer = customerService.findById(theAutomobileDetail.getCustomer().getId());
 		
 		theModel.addAttribute("automobile", theAutomobileDetail);
 		theModel.addAttribute("customer", customer);
@@ -91,7 +91,7 @@ public class AutomobileDetailController {
 	
 	@GetMapping("/delete")
 	public String deleteAutomobileDetail(@RequestParam("automobileDetailId") int theAutomobileId) {
-		int customerId = automobileDetailService.findById(theAutomobileId).getCustomerId().getId();
+		int customerId = automobileDetailService.findById(theAutomobileId).getCustomer().getId();
 		automobileDetailService.deleteById(theAutomobileId);
 		
 		return "redirect:/automobile-details/list-customer-automobile-details?customerId="+customerId;

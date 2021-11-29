@@ -38,21 +38,22 @@
 			
 			<hr>
 			
-			<form action="#" th:action="@{/insurance-quotes/save}" th:object="${quote}" method="POST">
+			<form action="#" th:action="@{/insurance-quotes/update}" th:object="${quote}" method="POST">
 							
 				<input type="hidden" th:field="*{id}" />		
 			
 				<input type="hidden" th:field="*{insuranceType}" />
-			
+				<input type="hidden" th:field="*{premium}" />
+				<input type="hidden" th:field="*{date}" />
+				<input type="hidden" th:field="*{detailId}" />
+				
 				<label>Acceptance</label>
 				<input type="checkbox" th:field="*{acceptance}">
 				
-				<input type="hidden" th:field="*{customerId.id}" />		
-									
-				<br><br>
 				
-				<input type="hidden" th:field="*{customerId}" />		
-									
+													
+				<br><br>
+													
 				<button type="submit" class="btn btn-info col-2"
 						onclick="if (!(confirm('Are you sure you want to change the status of this insurance quote?'))) return false">
 					Update
@@ -62,8 +63,9 @@
 			
 			<hr>
 			
+			<!-- 
 			<a th:href="@{/insurance-quotes/list-customer-quotes(customerId=${quote.customerId.id})}">Cancel</a>
-			
+			 -->
 		</div>
 		
 	</body>

@@ -22,7 +22,7 @@
 			
 			<p class="h4 mb-4">Get New Quote</p>
 			
-			<form action="#" th:action="@{/insurance-quotes/save}" th:object="${quote}" method="POST">
+			<form action="#" th:action="@{/insurance-quotes/pre-save(customerId=${customerId})}" th:object="${quote}" method="POST">
 							
 				<input type="hidden" th:field="*{id}" />		
 						 	
@@ -34,7 +34,7 @@
 			    </select>
 								
 				<input type="hidden" th:field="*{acceptance}" />
-																	
+				
 				<br>
 				
 				<button type="submit" class="btn btn-info col-2">Get Quote</button>
