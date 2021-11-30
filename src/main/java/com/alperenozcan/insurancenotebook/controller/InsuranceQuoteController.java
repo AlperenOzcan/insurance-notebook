@@ -10,7 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,18 +29,15 @@ public class InsuranceQuoteController {
 	private InsuranceQuoteService insuranceQuoteService;
 	private CustomerService customerService;
 	private CustomerHealthDetailService customerHealthDetailService;
-	private CustomerHealthDetailController customerHealthDetailController;
 	private AutomobileDetailService automobileDetailService;
 	
 	private InsuranceQuote insuranceQuote;
 	
 	public InsuranceQuoteController (InsuranceQuoteService insuranceQuoteService, CustomerService customerService,
-			CustomerHealthDetailService customerHealthDetailService, CustomerHealthDetailController customerHealthDetailController,
-			AutomobileDetailService automobileDetailService) {
+			CustomerHealthDetailService customerHealthDetailService, AutomobileDetailService automobileDetailService) {
 		this.insuranceQuoteService = insuranceQuoteService;
 		this.customerService = customerService;
 		this.customerHealthDetailService = customerHealthDetailService;
-		this.customerHealthDetailController = customerHealthDetailController;
 		this.automobileDetailService = automobileDetailService;
 	}
 
@@ -69,10 +65,11 @@ public class InsuranceQuoteController {
 		
 		// get automobile insurances
 		Optional<List<AutomobileDetail>> automobileDetails = automobileDetailService.findByCustomerId(theCustomerId);
-		List<InsuranceQuote> automobileQuoteList = null; 
+		List<InsuranceQuote> automobileQuoteList = new ArrayList<InsuranceQuote>(); 
 		if (automobileDetails.isPresent()) {
 			for(AutomobileDetail automobileDetail: automobileDetails.get()) {
-				automobileQuoteList = insuranceQuoteService.findByDetailIdAndInsuranceType(automobileDetail.getId(), "Automobile");
+				List<InsuranceQuote> insuranceQuote = insuranceQuoteService.findByDetailIdAndInsuranceType(automobileDetail.getId(), "Automobile");
+				automobileQuoteList.addAll(insuranceQuote);
 			}
 		}
 		
@@ -80,7 +77,7 @@ public class InsuranceQuoteController {
 		if(healthQuoteList != null && !healthQuoteList.isEmpty()) {
 			resultQuoteList.addAll(healthQuoteList);
 		}
-		if(automobileQuoteList != null && !automobileQuoteList.isEmpty()) {
+		if(!automobileQuoteList.equals(new ArrayList<InsuranceQuote>()) && !automobileQuoteList.isEmpty()) {
 			resultQuoteList.addAll(automobileQuoteList);			
 		}
 		
@@ -216,6 +213,8 @@ public class InsuranceQuoteController {
 	
 	@PostMapping("/update")
 	public String updateQuote(@ModelAttribute("quote") InsuranceQuote theInsuranceQuote) {
+		
+		theInsuranceQuote.setDate(new Date(System.currentTimeMillis()));
 		insuranceQuoteService.save(theInsuranceQuote);
 		
 		int customerId;
@@ -231,18 +230,6 @@ public class InsuranceQuoteController {
 		
 		return "redirect:/insurance-quotes/list-customer-quotes?customerId=" + customerId;
 	}
-
-	/*
-	@GetMapping("/delete")
-	public String deleteInsuranceQuote(@RequestParam("insuranceQuoteId") int theQuoteId) {
-		
-		int customerId = insuranceQuoteService.findById(theQuoteId).getCustomerId().getId();
-		
-		insuranceQuoteService.deleteById(theQuoteId);
-		
-		return "redirect:/insurance-quotes/list-customer-quotes?customerId=" + customerId;
-	}
-	*/
 	
 	@GetMapping("/delete")
 	public String deleteInsuranceQuote(@RequestParam("quoteId") int quoteId) {

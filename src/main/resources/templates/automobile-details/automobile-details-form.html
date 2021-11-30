@@ -34,11 +34,9 @@
 				<input type="number" th:field="*{kilometer}" class="form-control mb-4 col-4" placeholder="Used Kilometer" max="9999999" min="0">
 			
 				<label>Driver's Experience (year)</label>
-				<input type="number" th:field="*{experience}" class="form-control mb-4 col-4" placeholder="Used Kilometer" max="999" min="0">
+				<input type="number" th:field="*{experience}" class="form-control mb-4 col-4" placeholder="Experience" max="999" min="0">
 			
-				<!-- For future work, it will be auto computed -->
-				<label>Driver's Health Score</label>
-				<input type="number" th:field="*{health_score}" class="form-control mb-4 col-4" placeholder="Used Kilometer" max="9" min="0">
+				<input type="hidden" th:field="*{health_score}">
 			
 				<input type="hidden" th:field="*{customer}" />
 			

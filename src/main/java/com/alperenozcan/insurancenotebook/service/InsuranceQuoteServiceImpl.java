@@ -7,17 +7,31 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.alperenozcan.insurancenotebook.dao.AutomobileDetailRepository;
+import com.alperenozcan.insurancenotebook.dao.CustomerHealthDetailRepository;
+import com.alperenozcan.insurancenotebook.dao.CustomerRepository;
 import com.alperenozcan.insurancenotebook.dao.InsuranceQuoteRepository;
+import com.alperenozcan.insurancenotebook.entity.AutomobileDetail;
+import com.alperenozcan.insurancenotebook.entity.Customer;
+import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
 import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
 
 @Service
 public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 
 	private InsuranceQuoteRepository insuranceQuoteRepository;
+	private CustomerHealthDetailRepository customerHealthDetailRepository;
+	private CustomerRepository customerRepository;
+	private AutomobileDetailRepository automobileDetailRepository;
 	
 	@Autowired
-	public InsuranceQuoteServiceImpl(InsuranceQuoteRepository insuranceQuoteRepository) {
+	public InsuranceQuoteServiceImpl(InsuranceQuoteRepository insuranceQuoteRepository,
+			CustomerHealthDetailRepository customerHealthDetailRepository, CustomerRepository customerRepository,
+			AutomobileDetailRepository automobileDetailRepository) {
 		this.insuranceQuoteRepository = insuranceQuoteRepository;
+		this.customerHealthDetailRepository = customerHealthDetailRepository;
+		this.customerRepository = customerRepository;
+		this.automobileDetailRepository = automobileDetailRepository;
 	}
 
 	@Override
@@ -57,7 +71,7 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 	public void save(InsuranceQuote theInsuranceQuote) {
 		// double premium = calculatePremium(theInsuranceQuote);
 
-		double premium = 100.0;
+		double premium = calculatePremium(theInsuranceQuote);
 		theInsuranceQuote.setPremium(premium);
 		insuranceQuoteRepository.save(theInsuranceQuote);
 	}
@@ -74,83 +88,26 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 		insuranceQuoteRepository.deleteByDetailIdAndInsuranceType(theDetailId, theType);
 	}
 
-		
-/*
-	@Override
-	public List<InsuranceQuote> findAll() {
-		return insuranceQuoteRepository.findAll();
-	}
-
-	@Override
-	public InsuranceQuote findById(int theId) {
-		Optional<InsuranceQuote> result = insuranceQuoteRepository.findById(theId);
-		
-		InsuranceQuote theInsuranceQuote = null;
-		if (result.isPresent()) {
-			theInsuranceQuote = result.get();
-		}
-		else {
-			throw new RuntimeException("Did not find InsuranceQuote with id: " + theId);
-		}
-		
-		return theInsuranceQuote;
-	}
-
-	@Override
-	public Optional<List<InsuranceQuote>> findByCustomerId(int theCustomerId) {
-		Optional<Customer> theCustomer = customerRepository.findById(theCustomerId);
-		
-		Optional<List<InsuranceQuote>> result = Optional.empty();
-		if (theCustomer.isPresent()) {
-			Optional<List<InsuranceQuote>> insuranceQuotes = insuranceQuoteRepository.findByCustomerId(theCustomerId);
-			result = insuranceQuotes;
-		}
-		else {
-			// throw new RuntimeException("Did not find InsuranceQuote with customerId: " + theCustomerId);
-			System.out.println("Did not find insuranceQuote with customerId: " + theCustomerId);
-		}
-		
-		return result;
-	}
-
-	@Override
-	public void save(InsuranceQuote theInsuranceQuote) {
-		double premium = calculatePremium(theInsuranceQuote);
-
-		theInsuranceQuote.setPremium(premium);
-		
-		insuranceQuoteRepository.save(theInsuranceQuote);
-	}
-
-	@Override
-	public void deleteById(int theId) {
-		insuranceQuoteRepository.deleteById(theId);
-	}
-
-	
 	private double calculatePremium(InsuranceQuote theInsuranceQuote) {
-		
 		// get insurance type
 		String type = theInsuranceQuote.getInsuranceType();
-		int theCustomerId = theInsuranceQuote.getCustomerId().getId();
-		int quoteId = theInsuranceQuote.getId();
+		int detailId = theInsuranceQuote.getDetailId();
 		
 		switch(type) {
 			case "Health":
-				return calculateHealthInsurancePremium(theCustomerId);
+				return calculateHealthInsurancePremium(detailId);
 			case "Automobile":
-				return calculateAutomobileInsurancePremium(theCustomerId, quoteId);
+				return calculateAutomobileInsurancePremium(detailId);
 			case "Earthquake":
-				return calculateEartquakeInsurancePremium(theCustomerId);
+				return calculateEartquakeInsurancePremium(detailId);
 			default:
-				throw new RuntimeException("No such insurance type. Type: " + type);
+				throw new RuntimeException("No such insurance type.\n -->Type: " + type + "\n -->Detail ID: " + detailId);
 		}
 	}
-
 	
-	private double calculateHealthInsurancePremium(int theCustomerId) {
-		CustomerHealthDetail customerHealthDetail = customerHealthDetailRepository.findByCustomerId(theCustomerId).get();
-		Customer customer = customerRepository.findById(theCustomerId).get();
+	private double calculateHealthInsurancePremium(int theDetailId) {
+		CustomerHealthDetail customerHealthDetail = customerHealthDetailRepository.findById(theDetailId).get();
+		Customer customer = customerRepository.findById(customerHealthDetail.getCustomer().getId()).get();
 
 		// Gender=0 means male, =1 female
 		double premium = (customer.isGender()) ? 1000 : 1200;
@@ -165,38 +122,26 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 		
 		return premium;
 	}
-	
-	private double calculateAutomobileInsurancePremium(int theCustomerId, int quoteId) {
-		AutomobileDetail automobileDetail = automobileDetailRepository.findById(quoteId).get(); // this line may need to be changed
-		CustomerHealthDetail customerHealthDetail = customerHealthDetailRepository.findByCustomerId(theCustomerId).get();
+
+
+	private double calculateAutomobileInsurancePremium(int theDetailId) {
+		AutomobileDetail automobileDetail = automobileDetailRepository.findById(theDetailId).get(); // this line may need to be changed
 		
 		double premium = 0.0;
-		
-		automobileDetail.setHealth_score(calculateHealthScore(customerHealthDetail));
 		premium += automobileDetail.getHealth_score()*250;
 		premium += (automobileDetail.getAge())*100;
 		premium += (automobileDetail.getKilometer())*0.01;
 		if((15-(automobileDetail.getExperience())) > 0) {
 			premium += 15-(automobileDetail.getExperience())*50;
 		}
+		premium += (9 - automobileDetail.getHealth_score())*200; // max health score can be 9
 		
 		return premium;
 	}
 	
 	private double calculateEartquakeInsurancePremium(int theCustomerId) {
-		
 		return 124.0;
 	}
 	
-	
-	private int calculateHealthScore(CustomerHealthDetail customerHealthDetail) {
-		int score = 0;
-		
-		score += (customerHealthDetail.isHadHeartAttack()) ? 5 : 0;
-		score += (customerHealthDetail.isHasDiabetes()) ? 4 : 0;
-		
-		return score;
-	}
-	
-*/
+
 }
