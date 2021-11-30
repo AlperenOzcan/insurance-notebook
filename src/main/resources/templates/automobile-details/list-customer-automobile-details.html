@@ -34,7 +34,7 @@
 				<thead class="thead-dark"> 
 					<tr>
 						<th>Automobile ID</th>
-						<th>Automobile Age</th>
+						<th>Production Year</th>
 						<th>Automobile Used KM</th>
 						<th>Driver Experience</th>
 						<th>Driver Health Score</th>
@@ -44,7 +44,7 @@
 				<tbody>
 					<tr th:each="tempAutomobileDetail : ${automobileDetails}">
 						<td th:text="${tempAutomobileDetail.id}"></td>
-						<td th:text="${tempAutomobileDetail.age}"></td>
+						<td th:text="${tempAutomobileDetail.productionYear}"></td>
 						<td th:text="${tempAutomobileDetail.kilometer}"></td>
 						<td th:text="${tempAutomobileDetail.experience}"></td>
 						<td th:text="${tempAutomobileDetail.health_score}"></td>

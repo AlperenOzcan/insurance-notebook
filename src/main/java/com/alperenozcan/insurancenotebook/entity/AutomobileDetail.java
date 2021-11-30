@@ -1,5 +1,7 @@
 package com.alperenozcan.insurancenotebook.entity;
 
+import java.sql.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,8 +22,8 @@ public class AutomobileDetail {
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="age")
-	private int age;
+	@Column(name="production_year")
+	private Date productionYear;
 	
 	@Column(name="driver_experience")
 	private int experience;
@@ -42,14 +44,16 @@ public class AutomobileDetail {
 		
 	}
 
-	public AutomobileDetail(int age, int experience, int kilometer, int health_score, Customer customer) {
-		this.age = age;
+	public AutomobileDetail(Date productionYear, int experience, int kilometer, int health_score, Customer customer) {
+		super();
+		this.productionYear = productionYear;
 		this.experience = experience;
 		this.kilometer = kilometer;
 		this.health_score = health_score;
 		this.customer = customer;
 	}
 
+	
 	// Getters&Setters
 	public int getId() {
 		return id;
@@ -59,12 +63,12 @@ public class AutomobileDetail {
 		this.id = id;
 	}
 
-	public int getAge() {
-		return age;
+	public Date getProductionYear() {
+		return productionYear;
 	}
 
-	public void setAge(int age) {
-		this.age = age;
+	public void setProductionYear(Date productionYear) {
+		this.productionYear = productionYear;
 	}
 
 	public int getExperience() {
@@ -102,8 +106,7 @@ public class AutomobileDetail {
 	// toString
 	@Override
 	public String toString() {
-		return "AutomobileDetail [id=" + id + ", age=" + age + ", experience=" + experience + ", kilometer=" + kilometer
-				+ ", health_score=" + health_score + ", customer=" + customer + "]";
+		return "AutomobileDetail [id=" + id + ", productionYear=" + productionYear + ", experience=" + experience
+				+ ", kilometer=" + kilometer + ", health_score=" + health_score + ", customer=" + customer + "]";
 	}
-		
 }

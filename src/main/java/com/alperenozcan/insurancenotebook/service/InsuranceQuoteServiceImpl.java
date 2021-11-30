@@ -1,7 +1,9 @@
 package com.alperenozcan.insurancenotebook.service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,11 +127,18 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 
 
 	private double calculateAutomobileInsurancePremium(int theDetailId) {
-		AutomobileDetail automobileDetail = automobileDetailRepository.findById(theDetailId).get(); // this line may need to be changed
+		AutomobileDetail automobileDetail = automobileDetailRepository.findById(theDetailId).get();
 		
 		double premium = 0.0;
 		premium += automobileDetail.getHealth_score()*250;
-		premium += (automobileDetail.getAge())*100;
+		
+		// calculate automobile's age
+		long millis = System.currentTimeMillis();
+		Date currentDate = new Date(millis);
+		long diffInMillies = currentDate.getTime() - automobileDetail.getProductionYear().getTime();
+		double age = java.util.concurrent.TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) / 365.6;
+		
+		premium += age * 100;
 		premium += (automobileDetail.getKilometer())*0.01;
 		if((15-(automobileDetail.getExperience())) > 0) {
 			premium += 15-(automobileDetail.getExperience())*50;
