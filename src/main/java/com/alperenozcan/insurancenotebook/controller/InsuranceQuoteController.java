@@ -98,30 +98,30 @@ public class InsuranceQuoteController {
 		
 		List<AutomobileDetail> customersAutomobiles = new ArrayList<AutomobileDetail>();
 		
-		// boolean warning = false;
+		boolean healthDetail_warning = true;
+		boolean automobileDetail_warning = true;
 		
 		// check given customer has health detail or not
 		Optional<CustomerHealthDetail> customerHealtDetail = customerHealthDetailService.findByCustomerId(theId);
 		
 		if (customerHealtDetail.isPresent()) {
 			availableInsuranceTypes.add("Health");
+			healthDetail_warning = false;
 			
 			Optional<List<AutomobileDetail>> automobiles = automobileDetailService.findByCustomerId(theId);
 			if (automobiles.isPresent() && automobiles.get().size() != 0) {
 				availableInsuranceTypes.add("Automobile");
 				customersAutomobiles.addAll(automobiles.get());
+				automobileDetail_warning = false;
 			}
 		}
-		/*else {
-			warning = true;
-			// return customerHealthDetailController.showFormForUpdate(theId, theModel);
-		}*/
+		
 		theModel.addAttribute("availableInsuranceTypes", availableInsuranceTypes);
-		//theModel.addAttribute("warning", warning);
+		theModel.addAttribute("healthDetail_warning", healthDetail_warning);
+		theModel.addAttribute("automobileDetail_warning", automobileDetail_warning);
 		theModel.addAttribute("customersAutomobiles", customersAutomobiles);
 		
 		InsuranceQuote theQuote = new InsuranceQuote();
-		//theQuote.setCustomerId(customerService.findById(theId));
 		
 		theModel.addAttribute("quote", theQuote);
 		

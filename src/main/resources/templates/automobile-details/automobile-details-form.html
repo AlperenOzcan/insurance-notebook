@@ -27,7 +27,7 @@
 			<form action="#" th:action="@{/automobile-details/save}" th:object="${automobile}" method="POST">
 				<input type="hidden" th:field="*{id}" />
 				
-				<label>Automobile Age (year)</label>
+				<label>Production Year</label>
 				<input type="date" th:field="*{productionYear}" class="form-control mb-4 col-4" placeholder="Production Year" max="999" min="0">
 			
 				<label>Automobile Used KM</label>

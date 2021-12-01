@@ -43,19 +43,28 @@
 			
 			<hr>
 			
-			<!-- 
+			<!--
 			<a th:href="@{/insurance-quotes/list-customer-quotes(customerId=${quote.customerId.id})}">Cancel</a>
-			
-			<span th:if="${warning == true}">
+			-->
+			 
+			<span th:if="${healthDetail_warning == true}">
 				<br><br><br>
 				<span class="alert alert-warning" role="alert">
 					For Health and Automobile Insurances, you need to fill Health Detail Form!
-				 	<a th:href="@{/customer-health-details/showFormForUpdate(customerId=${quote.customerId.id})}" class="alert-link">
+				 	<a th:href="@{/customer-health-details/showFormForUpdate(customerId=${customerId})}" class="alert-link">
 				  		Click here to see the form
 				 	</a>.
 				</span>
 			</span>
-			 -->
+			<span th:if="${automobileDetail_warning == true}">
+				<br><br><br>
+				<span class="alert alert-warning" role="alert">
+					For Automobile Insurances, you need to fill Form!
+				 	<a th:href="@{/automobile-details/showFormForAdd(customerId=${customerId})}" class="alert-link">
+				  		Click here to see the form
+				 	</a>.
+				</span>
+			</span>
 		</div>
 		
 	</body>
