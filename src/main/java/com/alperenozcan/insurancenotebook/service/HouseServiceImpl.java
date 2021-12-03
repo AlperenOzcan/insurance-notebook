@@ -3,6 +3,7 @@ package com.alperenozcan.insurancenotebook.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.alperenozcan.insurancenotebook.dao.CustomerRepository;
@@ -11,6 +12,7 @@ import com.alperenozcan.insurancenotebook.dao.InsuranceQuoteRepository;
 import com.alperenozcan.insurancenotebook.entity.Customer;
 import com.alperenozcan.insurancenotebook.entity.House;
 
+@Service
 public class HouseServiceImpl implements HouseService {
 
 	private HouseRepository houseRepository;

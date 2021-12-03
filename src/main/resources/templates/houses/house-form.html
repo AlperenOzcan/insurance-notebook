@@ -10,11 +10,10 @@
 		
 		<title>Insurance Notebook</title>
 	</head>
-	
 	<body>
 		<div class="container">
 		
-			<h2 class="mt-4">Add Automobile</h2>
+			<h2 class="mt-4">Add House</h2>
 			<hr><hr>
 			
 			<div>
@@ -24,30 +23,30 @@
 				<br><br>
 			</div>
 			
-			<form action="#" th:action="@{/automobile-details/save}" th:object="${automobile}" method="POST">
+			<form action="#" th:action="@{/houses/save}" th:object="${house}" method="POST">
 				<input type="hidden" th:field="*{id}" />
 				
-				<label>Production Year</label>
-				<input type="date" th:field="*{productionYear}" class="form-control mb-4 col-4" placeholder="Production Year">
+				<label>Build Date</label>
+				<input type="date" th:field="*{builtDate}" class="form-control mb-4 col-4" placeholder="Build Date">
 			
-				<label>Automobile Used KM</label>
-				<input type="number" th:field="*{kilometer}" class="form-control mb-4 col-4" placeholder="Used Kilometer" max="9999999" min="0">
+				<label>Square Meters</label>
+				<input type="number" th:field="*{squareMeters}" class="form-control mb-4 col-4" placeholder="Square Meters" max="10000" min="0">
 			
-				<label>Driver's Experience (year)</label>
-				<input type="number" th:field="*{experience}" class="form-control mb-4 col-4" placeholder="Experience" max="999" min="0">
-			
-				<input type="hidden" th:field="*{health_score}">
-			
+				<label>Select Structure Type</label>
+				<select th:field="*{structureType}" class="form-control mb-4 col-4">
+					<option value="Type-1">Type-1</option>
+					<option value="Type-2">Type-2</option>
+					<option value="Type-3">Type-3</option>
+				</select>
+
 				<input type="hidden" th:field="*{customer}" />
-			
+				
 				<button type="submit" class="btn btn-info col-2">Save</button>
 			</form>
 			
-			
 			<br>
-			<a th:href="@{/automobile-details/list-customer-automobile-details(customerId=${customer.id})}">Back to Automobile Detail List</a>
-		
-		
-		</div>
+			<a th:href="@{/houses/list-customer-houses(customerId=${customer.id})}">Back to Houses List</a>
+	 		
+	 	</div>
 	</body>
 </html>
