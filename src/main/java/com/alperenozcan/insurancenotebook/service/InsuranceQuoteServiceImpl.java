@@ -12,10 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.alperenozcan.insurancenotebook.dao.AutomobileDetailRepository;
 import com.alperenozcan.insurancenotebook.dao.CustomerHealthDetailRepository;
 import com.alperenozcan.insurancenotebook.dao.CustomerRepository;
+import com.alperenozcan.insurancenotebook.dao.HouseRepository;
 import com.alperenozcan.insurancenotebook.dao.InsuranceQuoteRepository;
 import com.alperenozcan.insurancenotebook.entity.AutomobileDetail;
 import com.alperenozcan.insurancenotebook.entity.Customer;
 import com.alperenozcan.insurancenotebook.entity.CustomerHealthDetail;
+import com.alperenozcan.insurancenotebook.entity.House;
 import com.alperenozcan.insurancenotebook.entity.InsuranceQuote;
 
 @Service
@@ -25,15 +27,17 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 	private CustomerHealthDetailRepository customerHealthDetailRepository;
 	private CustomerRepository customerRepository;
 	private AutomobileDetailRepository automobileDetailRepository;
+	private HouseRepository houseRepository;
 	
 	@Autowired
 	public InsuranceQuoteServiceImpl(InsuranceQuoteRepository insuranceQuoteRepository,
 			CustomerHealthDetailRepository customerHealthDetailRepository, CustomerRepository customerRepository,
-			AutomobileDetailRepository automobileDetailRepository) {
+			AutomobileDetailRepository automobileDetailRepository, HouseRepository houseRepository) {
 		this.insuranceQuoteRepository = insuranceQuoteRepository;
 		this.customerHealthDetailRepository = customerHealthDetailRepository;
 		this.customerRepository = customerRepository;
 		this.automobileDetailRepository = automobileDetailRepository;
+		this.houseRepository = houseRepository;
 	}
 
 	@Override
@@ -148,8 +152,35 @@ public class InsuranceQuoteServiceImpl implements InsuranceQuoteService {
 		return premium;
 	}
 	
-	private double calculateEartquakeInsurancePremium(int theCustomerId) {
-		return 124.0;
+	private double calculateEartquakeInsurancePremium(int theDetailId) {
+		House house = houseRepository.findById(theDetailId).get();
+		
+		String structureType = house.getStructureType();
+		double premium = 0.0;
+		switch(structureType) {
+			case "Type-1":
+				premium += 1000;
+				break;
+			case "Type-2":
+				premium += 2000;
+				break;
+			case "Type-3":
+				premium += 3000;
+				break;		
+			default:
+				new RuntimeException("No such house structure type.\n ==>Type: " + structureType);
+		}
+		
+		// calculate house's age
+		long millis = System.currentTimeMillis();
+		Date currentDate = new Date(millis);
+		long diffInMillies = currentDate.getTime() - house.getBuiltDate().getTime();
+		double age = java.util.concurrent.TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS) / 365.6;
+		premium += age*100;
+		
+		premium += house.getSquareMeters()*0.1;
+		
+		return premium;
 	}
 	
 

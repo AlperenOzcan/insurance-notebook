@@ -21,31 +21,27 @@
 			<hr>
 			
 			<p class="h4 mb-4">Get New Quote</p>
-			
-			<form action="#" th:action="@{/insurance-quotes/pre-save(customerId=${customerId})}" th:object="${quote}" method="POST">
+			<form th:if="${availableInsuranceTypes.size() != 0}"
+				action="#" th:action="@{/insurance-quotes/pre-save(customerId=${customerId})}" th:object="${quote}" method="POST">
 							
 				<input type="hidden" th:field="*{id}" />		
-						 	
-			 	<label>Select Insurance Type</label>
+							 	
+				<label>Select Insurance Type</label>
 				<select th:field="*{insuranceType}" class="form-control mb-4 col-4">
-				    <th:block th:each="tempType : ${availableInsuranceTypes}" > 
-					    <option th:value="${tempType}" th:text="${tempType}"></option>
-			    	</th:block>
-			    </select>
-								
+					<th:block th:each="tempType : ${availableInsuranceTypes}" > 
+						<option th:value="${tempType}" th:text="${tempType}"></option>
+				    </th:block>
+				</select>
+									
 				<input type="hidden" th:field="*{acceptance}" />
-				
+					
 				<br>
-				
-				<button type="submit" class="btn btn-info col-2">Get Quote</button>
-			
+					<button type="submit" class="btn btn-info col-2">Get Quote</button>
 			</form>
 			
 			<hr>
 			
-			<!--
-			<a th:href="@{/insurance-quotes/list-customer-quotes(customerId=${quote.customerId.id})}">Cancel</a>
-			-->
+			<a th:href="@{/insurance-quotes/list-customer-quotes(customerId=${customerId})}">Cancel</a>
 			 
 			<span th:if="${healthDetail_warning == true}">
 				<br><br><br>
@@ -59,9 +55,18 @@
 			<span th:if="${automobileDetail_warning == true}">
 				<br><br><br>
 				<span class="alert alert-warning" role="alert">
-					For Automobile Insurances, you need to fill Form!
+					For Automobile Insurances, you need a recorded Automobile! 
 				 	<a th:href="@{/automobile-details/showFormForAdd(customerId=${customerId})}" class="alert-link">
-				  		Click here to see the form
+				  		Click here to record an Automobile
+				 	</a>.
+				</span>
+			</span>
+			<span th:if="${earthquake_warning == true}">
+				<br><br><br>
+				<span class="alert alert-warning" role="alert">
+					For Eartquake Insurances, you need a recorded House! 
+				 	<a th:href="@{/houses/showFormForAdd(customerId=${customerId})}" class="alert-link">
+				  		Click here to record an House
 				 	</a>.
 				</span>
 			</span>
