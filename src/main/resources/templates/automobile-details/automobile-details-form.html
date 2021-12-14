@@ -28,7 +28,7 @@
 				<input type="hidden" th:field="*{id}" />
 				
 				<label>Production Year</label>
-				<input type="date" th:field="*{productionYear}" class="form-control mb-4 col-4" placeholder="Production Year">
+				<input id="txtDate" type="date" th:field="*{productionYear}" class="form-control mb-4 col-4" placeholder="Production Year" max="2000-10-10">
 			
 				<label>Automobile Used KM</label>
 				<input type="number" th:field="*{kilometer}" class="form-control mb-4 col-4" placeholder="Used Kilometer" max="9999999" min="0">
@@ -47,7 +47,25 @@
 			<br>
 			<a th:href="@{/automobile-details/list-customer-automobile-details(customerId=${customer.id})}">Back to Automobile Detail List</a>
 		
-		
 		</div>
+	
+		<script>
+			$(function(){
+			    var dtToday = new Date();
+			    
+			    var month = dtToday.getMonth() + 1;
+			    var day = dtToday.getDate();
+			    var year = dtToday.getFullYear();
+			    if(month < 10)
+			        month = '0' + month.toString();
+			    if(day < 10)
+			        day = '0' + day.toString();
+			    
+			    var maxDate = year + '-' + month + '-' + day;
+			    
+			    alert(maxDate);
+			    $('#txtDate').attr('max', maxDate);
+			});
+		</script>
 	</body>
 </html>

@@ -27,7 +27,7 @@
 				<input type="hidden" th:field="*{id}" />
 				
 				<label>Build Date</label>
-				<input type="date" th:field="*{builtDate}" class="form-control mb-4 col-4" placeholder="Build Date">
+				<input id="txtDate" type="date" th:field="*{builtDate}" class="form-control mb-4 col-4" placeholder="Build Date" max="2000-10-10">
 			
 				<label>Square Meters</label>
 				<input type="number" th:field="*{squareMeters}" class="form-control mb-4 col-4" placeholder="Square Meters" max="10000" min="0">
@@ -48,5 +48,25 @@
 			<a th:href="@{/houses/list-customer-houses(customerId=${customer.id})}">Back to Houses List</a>
 	 		
 	 	</div>
+	 	
+	 	
+	 	<script>
+			$(function(){
+			    var dtToday = new Date();
+			    
+			    var month = dtToday.getMonth() + 1;
+			    var day = dtToday.getDate();
+			    var year = dtToday.getFullYear();
+			    if(month < 10)
+			        month = '0' + month.toString();
+			    if(day < 10)
+			        day = '0' + day.toString();
+			    
+			    var maxDate = year + '-' + month + '-' + day;
+			    
+			    alert(maxDate);
+			    $('#txtDate').attr('max', maxDate);
+			});
+		</script>
 	</body>
 </html>
